@@ -1,0 +1,117 @@
+# Translations template for PROJECT.
+# Copyright (C) 2023 ORGANIZATION
+# This file is distributed under the same license as the PROJECT project.
+# FIRST AUTHOR <EMAIL@ADDRESS>, 2023.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PROJECT VERSION\n"
+"Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
+"POT-Creation-Date: 2023-11-24 14:47+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.1\n"
+
+#: bot/private/enums/commands.py:35
+msgid "Start"
+msgstr ""
+
+#: bot/private/enums/commands.py:36
+msgid "Language"
+msgstr ""
+
+#: bot/private/enums/commands.py:37
+msgid "Help"
+msgstr ""
+
+#: bot/private/enums/commands.py:43
+msgid "Ban a user"
+msgstr ""
+
+#: bot/private/enums/commands.py:44
+msgid "Unban a user"
+msgstr ""
+
+#: bot/private/enums/commands.py:45
+msgid "Prevent a user from sending videos"
+msgstr ""
+
+#: bot/private/enums/commands.py:46
+msgid "Allow a user to send videos"
+msgstr ""
+
+#: bot/private/enums/commands.py:47
+msgid "Get user's data from DB"
+msgstr ""
+
+#: bot/private/enums/commands.py:48
+msgid "Show banned users"
+msgstr ""
+
+#: bot/private/enums/commands.py:49
+msgid "Show users on hold"
+msgstr ""
+
+#: bot/private/enums/commands.py:55
+msgid "Add a new admin"
+msgstr ""
+
+#: bot/private/enums/commands.py:56
+msgid "Remove an admin"
+msgstr ""
+
+#: bot/private/enums/commands.py:62
+msgid "Add a new superadmin"
+msgstr ""
+
+#: bot/private/enums/commands.py:63
+msgid "Remove a superadmin"
+msgstr ""
+
+#: bot/private/enums/markup.py:10
+msgid "Send a video"
+msgstr ""
+
+#: bot/private/enums/text.py:19
+msgid ""
+"Hello 😎!\n"
+"\n"
+"Here, you can sell your video that lasts up to 60 seconds.\n"
+"The video should be entertaining, similar to Tik-Tok, and created by you "
+"personally.\n"
+"\n"
+"If we like the video, we will contact you. ☜(ﾟヮﾟ☜)"
+msgstr ""
+
+#: bot/private/enums/text.py:31
+msgid "Sorry, but you cannot send messages at the moment."
+msgstr ""
+
+#: bot/private/enums/text.py:38
+msgid ""
+"🙈 We are still reviewing your previous video. Once reviewed, you will be "
+"able to send us more. Or, after{days}{hours}{minutes}, if we don't "
+"complete the review by the time."
+msgstr ""
+
+#: bot/private/enums/text.py:49
+msgid "Send your video up to 60 seconds:"
+msgstr ""
+
+#: bot/private/enums/text.py:56
+msgid "✅ Thank you! We will review your video and respond to you shortly."
+msgstr ""
+
+#: bot/private/enums/text.py:63
+msgid "❌ You can send one video at a time with a duration of up to 60 seconds."
+msgstr ""
+
+#: bot/private/enums/text.py:70
+msgid "❌ We only accept video submissions."
+msgstr ""
+

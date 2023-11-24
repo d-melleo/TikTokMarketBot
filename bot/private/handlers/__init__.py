@@ -5,6 +5,8 @@ from aiogram.filters import MagicData
 from aiogram.enums.chat_type import ChatType
 
 from .general import router as general_router
+from .banned import router as banned_router
+
 from ..middlewares import OUTER_MIDDLEWARE_KEY, INNER_MIDDLEWARE_KEY, _middlewares
 
 
@@ -14,7 +16,8 @@ _filters = {
 }
 
 _routers: List[Router] = [
-    general_router
+    general_router,
+    banned_router
 ]
 
 router = Router(name="private_root")

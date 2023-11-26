@@ -20,12 +20,14 @@ from aiogram.types import Message, CallbackQuery
 def post_video(message: Message) -> str:
     instructions = "\n↪ Натисни 👍, щоб повідомити користувачу, що відео сподобалося, або 👎, що не сподобалося."
 
-    text = dedent('''\
+    text = dedent(
+"""\
 Надійшло нове відео! 🎉
 
 Користувач: @{username}
 Ім'я: {name}
-Дата: {date}''').format(
+Дата: {date}
+""").format(
     username=message.from_user.username,
     name=f'{message.from_user.first_name} {message.from_user.last_name}',
     date=message.date.strftime('%d.%m.%Y'))

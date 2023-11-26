@@ -1,4 +1,4 @@
-from aiogram.types import InlineKeyboardButton
+from aiogram.types import CallbackQuery, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
 from emoji import emojize
@@ -23,7 +23,7 @@ def post_video() -> InlineKeyboardBuilder:
     return keyboard.as_markup()
 
 
-def confirm_decision(callback_data: str) -> InlineKeyboardBuilder:
+def confirm_decision(callback_data: CallbackQuery) -> InlineKeyboardBuilder:
     LBL_YES = "Так"
     LBL_NO = "Ні"
 

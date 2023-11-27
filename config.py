@@ -5,7 +5,7 @@ from typing import Dict
 from dotenv import load_dotenv
 
 
-load_dotenv()  # load variable from virtual environment
+load_dotenv()  # load variables from virtual environment
 
 # Path to the root directory
 WORKDIR = Path(__file__).parent 

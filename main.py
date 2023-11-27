@@ -3,7 +3,6 @@
 :bot_username: @TikTok_MarketBot
 """
 
-
 import asyncio
 import logging
 import sys

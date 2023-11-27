@@ -1,15 +1,26 @@
 from datetime import datetime, timedelta
-import json
-from typing import Any, Dict, List, Union
+from typing import Any, Dict, List, Optional, Union
 
 from aiogram.types import BotCommand, User
 from motor.motor_asyncio import AsyncIOMotorDatabase, AsyncIOMotorClient, AsyncIOMotorCollection
 from pymongo.server_api import ServerApi
 
+from bot.private.enums.my_roles import MyRoles
 from config import DB_COLLECTION_NAME, DB_CONNECTION_STRING, DB_NAME
 
 
 class DBConnect:
+    """A class representing a MongoDB connection using AsyncIOMotorClient.
+
+    Attributes:
+        client (AsyncIOMotorClient): The MongoDB client connected to the specified database.
+        db (AsyncIOMotorDatabase): The MongoDB database instance accessed through the client.
+        collection (AsyncIOMotorCollection): The MongoDB collection within the specified database.
+
+    Note:
+        Ensure that the class is used within an asynchronous context, as it utilizes
+        AsyncIOMotorClient for asynchronous MongoDB operations.
+    """
     # client = AsyncIOMotorClient(connection_string, server_api=ServerApi("1", strict=True))
     client = AsyncIOMotorClient(DB_CONNECTION_STRING)
     db: AsyncIOMotorDatabase = client[DB_NAME]
@@ -20,9 +31,9 @@ class UserData:
     def __init__(
         self,
         data: Dict[str, Any],
-        current_utc_time: datetime = datetime.utcnow()
+        current_utc_time: datetime
     ) -> None:
-        DEFAULT_USER_ROLE = "user"
+        DEFAULT_USER_ROLE = MyRoles.USER
         
         # _id (with underscore) replaces Mongo's default _id key.
         self._id: int = data.get('id', data.get('_id'))
@@ -39,6 +50,8 @@ class UserData:
         self.hold_until: datetime = data.get(
             'hold_until', current_utc_time)
 
+        self.commands: List[BotCommand] = None
+
     @property
     def full_name(self) -> str:
         if self.last_name:
@@ -51,12 +64,11 @@ class UserData:
         tg_user: User,
         values: List[str]
     ) -> Dict[str, Any]:
-        """Update user in DB
+        """Update user information in the database.
 
-        Sometimes, users update their data in Telegram (name, username, etc.).
-        This functions keeps Database up-to-date with users.
+        This function is designed to synchronize user data in the database with
+        changes made by users on Telegram, such as updates to their name, username, etc.
         """
-
         update_values: Dict[str, str] = {}
 
         if db_user['_id'] == tg_user.id:
@@ -74,8 +86,7 @@ class UserData:
         return db_user
 
     async def update_last_activity(self, current_utc_time: datetime) -> None:
-        """Update last activity timestamp in DB after a hadnler's execution."""
-
+        """Update the last activity timestamp in the database after a handler's execution."""
         self.last_activity = current_utc_time
         await DBConnect.collection.update_one(
             {'_id': self._id},
@@ -85,10 +96,19 @@ class UserData:
 
 async def get_my_user(
     tg_user: User,
-    current_utc_time: datetime = datetime.utcnow()
+    current_utc_time: datetime
 ) -> UserData:
+    """Retrieve or create a UserData instance for the given Telegram user.
+
+    Args:
+        tg_user (User): The Telegram user.
+        current_utc_time (datetime): The current UTC time.
+
+    Returns:
+        UserData: The UserData instance for the specified Telegram user.
+    """
     my_user = None
-    db_user: Dict[str, Any] | None = await DBConnect.collection.find_one({'_id': tg_user.id})
+    db_user = await DBConnect.collection.find_one({'_id': tg_user.id})
 
     if not db_user:
         my_user = UserData(tg_user.__dict__, current_utc_time)
@@ -97,7 +117,7 @@ async def get_my_user(
 
     else:
         # Update user's details in DB if anything has changed.
-        db_user: Dict[str, Any] = await UserData.update_database(
+        db_user = await UserData.update_database(
             db_user,
             tg_user,
             values=["first_name", "last_name", "username"]

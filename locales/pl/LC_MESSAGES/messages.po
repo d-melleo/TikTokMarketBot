@@ -7,126 +7,110 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-24 14:47+0200\n"
-"PO-Revision-Date: 2023-11-24 15:12+0200\n"
+"POT-Creation-Date: 2023-11-27 17:31+0200\n"
+"PO-Revision-Date: 2023-11-27 17:36+0200\n"
 "Last-Translator: \n"
-"Language-Team: pl <LL@li.org>\n"
 "Language: pl\n"
+"Language-Team: pl <LL@li.org>\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
+"(n%100<10 || n%100>=20) ? 1 : 2);\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"Generated-By: Babel 2.9.1\n"
-"X-Generator: Poedit 3.4.1\n"
+"Generated-By: Babel 2.12.1\n"
 
-#: bot/private/enums/commands.py:35
-msgid "Start"
-msgstr "Rozpocznij"
-
-#: bot/private/enums/commands.py:36
-msgid "Language"
-msgstr "Język"
-
-#: bot/private/enums/commands.py:37
-msgid "Help"
-msgstr "Pomoc"
-
-#: bot/private/enums/commands.py:43
-msgid "Ban a user"
-msgstr "Zbanuj użytkownika"
-
-#: bot/private/enums/commands.py:44
-msgid "Unban a user"
-msgstr "Odbanuj użytkownika"
-
-#: bot/private/enums/commands.py:45
-msgid "Prevent a user from sending videos"
-msgstr "Zablokuj możliwość wysyłania filmów użytkownikowi"
-
-#: bot/private/enums/commands.py:46
-msgid "Allow a user to send videos"
-msgstr "Zezwól użytkownikowi na wysyłanie filmów"
-
-#: bot/private/enums/commands.py:47
-msgid "Get user's data from DB"
-msgstr "Pobierz dane użytkownika z bazy danych"
-
-#: bot/private/enums/commands.py:48
-msgid "Show banned users"
-msgstr "Pokaż zablokowanych użytkowników"
-
-#: bot/private/enums/commands.py:49
-msgid "Show users on hold"
-msgstr "Pokaż użytkowników na wstrzymaniu"
-
-#: bot/private/enums/commands.py:55
-msgid "Add a new admin"
-msgstr "Dodaj nowego administratora"
-
-#: bot/private/enums/commands.py:56
-msgid "Remove an admin"
-msgstr "Usuń administratora"
-
-#: bot/private/enums/commands.py:62
-msgid "Add a new superadmin"
-msgstr "Dodaj nowego superadministratora"
-
-#: bot/private/enums/commands.py:63
-msgid "Remove a superadmin"
-msgstr "Usuń superadministratora"
-
-#: bot/private/enums/markup.py:10
-msgid "Send a video"
-msgstr "Wyślij film"
-
-#: bot/private/enums/text.py:19
+#: bot/private/content/text.py:18
 msgid ""
-"Hello 😎!\n"
+"Hello {}!\n"
 "\n"
 "Here, you can sell your video that lasts up to 60 seconds.\n"
 "The video should be entertaining, similar to Tik-Tok, and created by you "
 "personally.\n"
 "\n"
-"If we like the video, we will contact you. ☜(ﾟヮﾟ☜)"
+"If we like the video, we will contact you. {}{}{}"
 msgstr ""
-"Certainly! Here's the translation in Polish:\n"
-"\n"
-"Cześć 😎!\n"
+"Cześć {}!\n"
 "\n"
 "Tutaj możesz sprzedać swój film trwający do 60 sekund. Film powinien być "
 "rozrywkowy, podobny do Tik-Toka, i stworzony osobiście przez Ciebie.\n"
 "\n"
-"Jeśli spodoba nam się film, skontaktujemy się z Tobą. ☜(ﾟヮﾟ☜)"
+"Jeśli spodoba nam się film, skontaktujemy się z Tobą. {}{}{}"
 
-#: bot/private/enums/text.py:31
-msgid "Sorry, but you cannot send messages at the moment."
-msgstr "Przepraszam, ale w chwili obecnej nie możesz wysyłać wiadomości."
+#: bot/private/content/text.py:35
+msgid "Sorry, but you cannot send messages at the moment. {}"
+msgstr "Przepraszam, ale w chwili obecnej nie możesz wysyłać wiadomości. {}"
 
-#: bot/private/enums/text.py:38
+#: bot/private/content/text.py:44
 msgid ""
-"🙈 We are still reviewing your previous video. Once reviewed, you will be "
-"able to send us more. Or, after{days}{hours}{minutes}, if we don't complete "
-"the review by the time."
+"{emoji} We are still reviewing your previous video. Once reviewed, you "
+"will be able to send us more. Or, after{days}d{hours}h{minutes}m, if we "
+"don't complete the review by the time."
 msgstr ""
-"🙈 Nadal analizujemy Twoje poprzednie wideo. Po zakończeniu recenzji "
-"będziesz mógł/a nam przesłać więcej. Lub, jeśli nie zakończymy recenzji do "
-"{days}{hours}{minutes}, będziesz mógł/a wysłać nam kolejne wideo."
+"{emoji} Nadal analizujemy Twoje poprzednie wideo. Po zakończeniu recenzji"
+" będziesz mógł/mogła nam przesłać więcej. Lub, jeśli nie zakończymy "
+"recenzji wcześniej niż {days}d{hours}h{minutes}m, będziesz mógł/mogła "
+"wysłać nam kolejne wideo."
 
-#: bot/private/enums/text.py:49
+#: bot/private/content/text.py:56
 msgid "Send your video up to 60 seconds:"
 msgstr "Prześlij swoje wideo do 60 sekund:"
 
-#: bot/private/enums/text.py:56
-msgid "✅ Thank you! We will review your video and respond to you shortly."
-msgstr "✅ Dziękujemy! Przejrzymy Twoje wideo i odpowiemy wkrótce."
+#: bot/private/content/text.py:63
+msgid "{} Thank you! We will review your video and respond to you shortly."
+msgstr "{} Dziękujemy! Przejrzymy Twoje wideo i odpowiemy wkrótce."
 
-#: bot/private/enums/text.py:63
-msgid ""
-"❌ You can send one video at a time with a duration of up to 60 seconds."
+#: bot/private/content/text.py:72
+msgid "{} You can send one video at a time with a duration of up to 60 seconds."
 msgstr ""
-"❌ Możesz przesyłać jedno wideo na raz o maksymalnej długości do 60 sekund."
+"{} Możesz przesyłać jedno wideo na raz o maksymalnej długości do 60 "
+"sekund."
 
-#: bot/private/enums/text.py:70
-msgid "❌ We only accept video submissions."
-msgstr "❌ Akceptujemy tylko przesyłanie wideo."
+#: bot/private/content/text.py:81
+msgid "{} We only accept video submissions."
+msgstr "{} Akceptujemy tylko przesyłanie wideo."
+
+#~ msgid "Start"
+#~ msgstr "Rozpocznij"
+
+#~ msgid "Language"
+#~ msgstr "Język"
+
+#~ msgid "Help"
+#~ msgstr "Pomoc"
+
+#~ msgid "Ban a user"
+#~ msgstr "Zbanuj użytkownika"
+
+#~ msgid "Unban a user"
+#~ msgstr "Odbanuj użytkownika"
+
+#~ msgid "Prevent a user from sending videos"
+#~ msgstr "Zablokuj możliwość wysyłania filmów użytkownikowi"
+
+#~ msgid "Allow a user to send videos"
+#~ msgstr "Zezwól użytkownikowi na wysyłanie filmów"
+
+#~ msgid "Get user's data from DB"
+#~ msgstr "Pobierz dane użytkownika z bazy danych"
+
+#~ msgid "Show banned users"
+#~ msgstr "Pokaż zablokowanych użytkowników"
+
+#~ msgid "Show users on hold"
+#~ msgstr "Pokaż użytkowników na wstrzymaniu"
+
+#~ msgid "Add a new admin"
+#~ msgstr "Dodaj nowego administratora"
+
+#~ msgid "Remove an admin"
+#~ msgstr "Usuń administratora"
+
+#~ msgid "Add a new superadmin"
+#~ msgstr "Dodaj nowego superadministratora"
+
+#~ msgid "Remove a superadmin"
+#~ msgstr "Usuń superadministratora"
+
+#~ msgid "Send a video"
+#~ msgstr "Wyślij film"
+

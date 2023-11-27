@@ -1,37 +1,33 @@
 from typing import Union
 
-from aiogram import Bot, Router, F
+from aiogram import Bot, F, Router
 from aiogram.types import CallbackQuery, Chat, Message
 
+from ..content import markup, text
+from ..enums.markup_data import MarkupData as M
 from config import CHANNELS
-from ..enums import markup, text
-from ..enums.markup import (
-    VIDEO_LIKED_DATA, VIDEO_DISLIKED_DATA,
-    CONFIRMED_LIKED_DATA, CONFIRMED_DISLIKED_DATA,
-    NOT_CONFIRMED_DATA
-)
-
+from db.userdata import UserData
 
 ADMISSIONS_CHANNEL_ID: int = CHANNELS['admissions']
-
 router = Router(name="admissions_general")
 
-
-### HANDLERS ###
 
 async def post_video(
     message: Message,
     bot: Bot,
-    channel_id: Union[int, str] = ADMISSIONS_CHANNEL_ID):
+    my_user: UserData,
+    channel_id: Union[int, str] = ADMISSIONS_CHANNEL_ID
+) -> None:
+
     await bot.send_video(
         chat_id=channel_id,
         video=message.video.file_id,
-        caption=text.post_video(message),
+        caption=text.post_video(message, my_user),
         reply_markup=markup.post_video()
     )
 
 
-@router.callback_query(F.data.in_({VIDEO_LIKED_DATA, VIDEO_DISLIKED_DATA}))
+@router.callback_query(F.data.in_({M.VIDEO_LIKED_DATA, M.VIDEO_DISLIKED_DATA}))
 async def confirm_decision(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
     await bot.edit_message_caption(
         chat_id=event_chat.id,
@@ -41,7 +37,7 @@ async def confirm_decision(callback_query: CallbackQuery, bot: Bot, event_chat: 
     )
 
 
-@router.callback_query(F.data.in_({CONFIRMED_LIKED_DATA, CONFIRMED_DISLIKED_DATA}))
+@router.callback_query(F.data.in_({M.CONFIRMED_LIKED_DATA, M.CONFIRMED_DISLIKED_DATA}))
 async def confirmed_decision(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
     await bot.edit_message_caption(
         chat_id=event_chat.id,
@@ -51,7 +47,7 @@ async def confirmed_decision(callback_query: CallbackQuery, bot: Bot, event_chat
     )
 
 
-@router.callback_query(F.data == NOT_CONFIRMED_DATA)
+@router.callback_query(F.data == M.NOT_CONFIRMED_DATA)
 async def not_confirmed(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
     await bot.edit_message_caption(
         chat_id=event_chat.id,

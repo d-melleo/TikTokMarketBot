@@ -4,7 +4,7 @@ from aiogram import BaseMiddleware, Bot
 from aiogram.types import BotCommand, Message, TelegramObject
 from aiogram.types.bot_command_scope_chat import BotCommandScopeChat
 
-from ..content.commands import get_my_commands
+from ..messages.private_chat_commands_menu import get_my_commands
 from db.userdata import UserData
 
 
@@ -24,7 +24,7 @@ class CommandsMiddleware(BaseMiddleware):
         my_user: UserData = data['my_user']
 
         # Set the commands for the user based on their role.
-        my_user.commands = get_my_commands(my_user)
+        my_user.commands: List[BotCommand] = get_my_commands(my_user)
 
         # Set the commands available for the user in the bot.
         await bot.set_my_commands(

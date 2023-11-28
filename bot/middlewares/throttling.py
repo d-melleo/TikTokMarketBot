@@ -7,7 +7,7 @@ from aiogram.types import Chat, Update
 from aiogram.enums.chat_type import ChatType
 from cachetools import TTLCache
 
-from config import CHANNELS
+from config.environment_vars import CHANNELS
 
 CHANNELS: Dict[str, int]
 CURRENT_UTC_TIME_KEY = "current_utc_time"

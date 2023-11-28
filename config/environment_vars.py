@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()  # load variables from virtual environment
 
 # Path to the root directory
-WORKDIR = Path(__file__).parent 
+WORKDIR = Path(__file__).parent.parent
 
 # Bot constants
 BOT_TOKEN: str = getenv('BOT_TOKEN')

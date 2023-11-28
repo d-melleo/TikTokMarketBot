@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from aiogram.types import BotCommand, User
 
-from bot.private.enums.my_roles import MyRoles
+from bot.enums.private_chat_roles import PrivateChatRoles
 from db.connect import DBConnect
 
 
@@ -13,7 +13,7 @@ class UserData:
         data: Dict[str, Any],
         current_utc_time: datetime
     ) -> None:
-        DEFAULT_USER_ROLE = MyRoles.USER
+        DEFAULT_USER_ROLE = PrivateChatRoles.USER
         
         # _id (with underscore) replaces Mongo's default _id key.
         self._id: int = data.get('id', data.get('_id'))

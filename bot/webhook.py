@@ -3,8 +3,9 @@ from aiogram.enums import ParseMode
 from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_application
 from aiohttp import web
 
-from config import BOT_TOKEN, WEBHOOK_URI
 from . import dispatcher
+from config.environment_vars import BOT_TOKEN, WEBHOOK_URI
+
 
 
 async def register_webhook(bot: Bot, webhook_uri: str = WEBHOOK_URI) -> None:
@@ -23,7 +24,7 @@ async def register_webhook(bot: Bot, webhook_uri: str = WEBHOOK_URI) -> None:
     """
 
     await bot.delete_webhook(drop_pending_updates=True)  # Remove the current webhook if any.
-    await bot.set_webhook(f'{WEBHOOK_URI}')  # Register a new webhook.
+    await bot.set_webhook(f'{webhook_uri}')  # Register a new webhook.
 
 
 async def on_shutdown(bot: Bot) -> None:

@@ -1,7 +1,7 @@
 from aiogram import Bot, Dispatcher
 
 from . import dispatcher
-from config import BOT_TOKEN
+from config.environment_vars import BOT_TOKEN
 
 
 async def polling_run() -> None:

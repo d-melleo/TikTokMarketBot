@@ -1,7 +1,7 @@
 from datetime import datetime
-from typing import Any, Awaitable, Callable, Dict, Union
+from typing import Any, Awaitable, Callable, Dict
 
-from aiogram import BaseMiddleware, Router
+from aiogram import BaseMiddleware
 from aiogram.enums.chat_type import ChatType
 from aiogram.types import Chat, TelegramObject, User
 

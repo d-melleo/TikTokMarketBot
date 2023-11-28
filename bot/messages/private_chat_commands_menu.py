@@ -3,7 +3,7 @@ from typing import List
 from aiogram.types import BotCommand
 from aiogram.utils.i18n import gettext as _
 
-from ..enums.my_roles import MyRoles
+from ..enums.private_chat_roles import PrivateChatRoles
 from db.userdata import UserData
 
 
@@ -44,13 +44,13 @@ class CreatorCommands(SuperAdminCommands):
 
 
 def get_my_commands(my_user: UserData) -> List[BotCommand]:
-    if my_user.role == MyRoles.USER:
+    if my_user.role == PrivateChatRoles.USER:
         role_commands = UserCommands()
-    elif my_user.role == MyRoles.ADMIN:
+    elif my_user.role == PrivateChatRoles.ADMIN:
         role_commands = AdminCommands()
-    elif my_user.role == MyRoles.SUPERADMIN:
+    elif my_user.role == PrivateChatRoles.SUPERADMIN:
         role_commands = SuperAdminCommands()
-    elif my_user.role == MyRoles.CREATOR:
+    elif my_user.role == PrivateChatRoles.CREATOR:
         role_commands = CreatorCommands()
 
     # Get commands for a specific role.

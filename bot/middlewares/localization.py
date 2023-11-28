@@ -3,7 +3,7 @@ from typing import Any, Awaitable, Callable, Dict
 from aiogram.types import TelegramObject
 from aiogram.utils.i18n import I18n, I18nMiddleware
 
-from config import WORKDIR
+from config.environment_vars import WORKDIR
 from db.userdata import UserData
 
 PATH = WORKDIR/"locales"  # Path to the root directory.

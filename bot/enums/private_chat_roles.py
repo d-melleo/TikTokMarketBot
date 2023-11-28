@@ -1,7 +1,7 @@
 from enum import Enum
 
 
-class MyRoles(str, Enum):
+class PrivateChatRoles(str, Enum):
     USER = "user"
     ADMIN = "admin"
     SUPERADMIN = "superadmin"

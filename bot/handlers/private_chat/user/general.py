@@ -1,44 +1,39 @@
-from typing import Set
-
 from aiogram import Bot, F, Router
 from aiogram.enums.content_type import ContentType
 from aiogram.filters import Command, MagicData
 from aiogram.types import CallbackQuery, Chat, Message
 
-from ...channels.admissions.handlers.general import post_video
-from ..content import markup, text
-from ..enums.markup_data import MarkupData as M
+from ...admission_channel.general import post_video
+from ....messages.markups import private_chat_markup as M
+from ....messages.text import private_chat_text as T
+from ....enums.private_chat_markup_data import PrivateChatMarkupData as MD
+from bot.tools.router_setup import register_filters
 from db.userdata import UserData
 
-# Sub router of the parent Router(name="private_root")
-router = Router(name="private_user")
+# Sub router of the parent Router(name="private_chat_root")
+router = Router(name="private_chat_general")
 
-# Filters for this sub router
-_filters: Set[MagicData] = {
+filters = {
     MagicData(~F.my_user.is_banned)
 }
-
-_exclude = ["update", "error"]
-# Register filters to all events that are not in _exclude.
-for observer_name, observer_event in router.observers.items():
-    if observer_name not in _exclude:
-        observer_event.filter(*_filters)
+# Register filters for this sub router.
+register_filters(router, filters)
 
 
 @router.message(Command("start"))
 async def start(message: Message, bot: Bot, event_chat: Chat):
     await bot.send_message(
         chat_id=event_chat.id,
-        text=text.start(),
-        reply_markup=markup.send_video()
+        text=T.start(),
+        reply_markup=M.send_video()
     )
 
 
-@router.callback_query(F.data == M.SEND_VIDEO_DATA)
+@router.callback_query(F.data == MD.SEND_VIDEO_DATA)
 async def request_video(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
     await bot.send_message(
         chat_id=event_chat.id,
-        text=text.request_video()
+        text=T.request_video()
     )
 
 
@@ -49,7 +44,7 @@ async def received_video(message: Message, bot: Bot, event_chat: Chat, my_user: 
 
     await bot.send_message(
         chat_id=event_chat.id,
-        text=text.received_video()
+        text=T.received_video()
     )
 
 
@@ -57,7 +52,7 @@ async def received_video(message: Message, bot: Bot, event_chat: Chat, my_user: 
 async def received_video_long(message: Message, bot: Bot, event_chat: Chat):
     await bot.send_message(
         chat_id=event_chat.id,
-        text=text.received_video_long()
+        text=T.received_video_long()
     )
 
 
@@ -65,5 +60,5 @@ async def received_video_long(message: Message, bot: Bot, event_chat: Chat):
 async def received_other_media(message: Message, bot: Bot, event_chat: Chat):
     await bot.send_message(
         chat_id=event_chat.id,
-        text=text.received_other_media()
+        text=T.received_other_media()
     )

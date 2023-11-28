@@ -14,7 +14,7 @@ from textwrap import dedent
 from aiogram.types import Message, CallbackQuery
 from emoji import emojize
 
-from ..enums.markup_data import MarkupData as M
+from ...enums.admissions_channel_markup_data import AdmissionsChannelMarkupData as MD
 from db.userdata import UserData
 
 INSTRUCTIONS_DELIMITER = emojize(":left_arrow_curving_right:")
@@ -27,8 +27,8 @@ def post_video(message: Message, my_user: UserData) -> str:
 """\
     .format(
         delimiter=INSTRUCTIONS_DELIMITER,
-        yes=M.VIDEO_LIKED_LABEL,
-        no=M.VIDEO_DISLIKED_LABEL
+        yes=MD.VIDEO_LIKED_LABEL,
+        no=MD.VIDEO_DISLIKED_LABEL
     )
 
     text = dedent(
@@ -61,9 +61,9 @@ def confirm_decision(callback_query: CallbackQuery) -> str:
         delimiter=INSTRUCTIONS_DELIMITER,
     )
 
-    if callback_query.data == M.VIDEO_LIKED_DATA:
+    if callback_query.data == MD.VIDEO_LIKED_DATA:
         instructions = instructions.format('')
-    if callback_query.data == M.VIDEO_DISLIKED_DATA:
+    if callback_query.data == MD.VIDEO_DISLIKED_DATA:
         instructions = instructions.format('не ')
 
     output_text = f'{original_text}{instructions}'
@@ -83,9 +83,9 @@ def confirmed_decision(callback_query: CallbackQuery) -> str:
         username=username,
     )
 
-    if callback_query.data == M.CONFIRMED_LIKED_DATA:
+    if callback_query.data == MD.CONFIRMED_LIKED_DATA:
         instructions = instructions.format(emoji=emojize(':check_mark:'), no='')
-    elif callback_query.data == M.CONFIRMED_DISLIKED_DATA:
+    elif callback_query.data == MD.CONFIRMED_DISLIKED_DATA:
         instructions = instructions.format(emoji=emojize(':cross_mark:'), no='не ')
 
     output_text = f'{original_text}{instructions}'
@@ -101,8 +101,8 @@ def not_confirmed(callback_query: CallbackQuery) -> str:
 """\
     .format(
         delimiter=INSTRUCTIONS_DELIMITER,
-        yes=M.VIDEO_LIKED_LABEL,
-        no=M.VIDEO_DISLIKED_LABEL
+        yes=MD.VIDEO_LIKED_LABEL,
+        no=MD.VIDEO_DISLIKED_LABEL
     )
 
     output_text = f'{original_text}{instructions}'

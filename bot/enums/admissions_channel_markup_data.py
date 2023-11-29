@@ -2,7 +2,8 @@ from enum import Enum
 
 from emoji import emojize
 
-class AdmissionsChannelMarkupData(Enum):
+
+class AdmissionsChannelMarkupData(str, Enum):
     VIDEO_LIKED_DATA = "video_liked"
     VIDEO_LIKED_LABEL = emojize(":thumbs_up:")
     

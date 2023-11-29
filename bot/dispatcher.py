@@ -11,7 +11,7 @@ async def initialize() -> Dispatcher:
     Returns:
         Dispatcher: The initialized aiogram Dispatcher.
     """
-    dp = Dispatcher()  # Create dispatcher instance (it's the root/main Router)
+    dp = Dispatcher(name="dispatcher")  # Create dispatcher instance (it's the root/main Router)
     dp.include_routers(*routers)  # Register sub routers
     register_middlewares(
         router=dp,

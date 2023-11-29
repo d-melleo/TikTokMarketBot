@@ -1,13 +1,12 @@
 """
-:pybabel commands
-
-: pybabel init -i locales/messages.pot -d locales -D messages -l [lang code]
-: pybabel extract --input-dirs=. -o locales/messages.pot
-: pybabel update -d locales -D messages -i locales/messages.pot
-: pybabel compile -d locales -D messages
-
+    - Pybabel commands:
+        pybabel init -i locales/messages.pot -d locales -D messages -l [lang code]
+        pybabel extract --input-dirs=. -o locales/messages.pot
+        pybabel update -d locales -D messages -i locales/messages.pot
+        pybabel compile -d locales -D messages
 """
 
+from enum import Enum
 import re
 from textwrap import dedent
 
@@ -17,93 +16,72 @@ from emoji import emojize
 from ...enums.admissions_channel_markup_data import AdmissionsChannelMarkupData as MD
 from db.userdata import UserData
 
-INSTRUCTIONS_DELIMITER = emojize(":left_arrow_curving_right:")
 
 
-def post_video(message: Message, my_user: UserData) -> str:
-    instructions = """\
-{delimiter} Натисни {yes}, щоб сповістити користувача, що відео сподобалось, \
-або {no}, що не сподобалось.\
+# Decorator, merges text with instructions
+def formatting(func) -> str:
+    INSTR_DELIMITER = "{}{}".format(
+        emojize(":left_arrow_curving_right:"),  # Emoji: ↪️
+        " "  # Intentional whitespace
+        )
+
+    def wrapper(*args, **kwargs) -> str:
+        # Unpack arguments from the function
+        data = func(*args, **kwargs)
+        instr = data["instr"]
+
+        if data["message"]:
+            if data["message"].video:
+                message: Message = data["message"]
+                my_user: UserData = data["my_user"]
+
+                text =\
 """\
-    .format(
-        delimiter=INSTRUCTIONS_DELIMITER,
-        yes=MD.VIDEO_LIKED_LABEL,
-        no=MD.VIDEO_DISLIKED_LABEL
-    )
-
-    text = dedent(
-"""\
-Надійшло нове відео! 🎉
+Надійшло нове відео! {emj}
 
 Користувач: @{username}
 Ім'я: {name}
 Дата: {date}\
-"""
-).format(
+"""\
+.format(
+    emj=emojize(":party_popper:"),
     username=my_user.username,
     name=my_user.full_name,
     date=message.date.strftime('%d.%m.%Y'))
 
-    if message.text:
-        text+="\nКоментарій: {}".format(message.text)
+        else:
+            text = data["text"]
 
-    output_text = f'{text}\n{instructions}'
-    return output_text
+        # Add delimiter to the instructions
+        instr = f"{INSTR_DELIMITER} {instr}"
+        # Remove old instructions, whitespaces, more than one blank line in a row
+        text = text.split(INSTR_DELIMITER)[0].strip('\n').strip()
+        # Merge new instructions to the old text
+        output_text = f"{text}{instr}"
+        # Append a blank line between the text and instructions
+        output_text = re.sub(INSTR_DELIMITER, "\n"*2 + INSTR_DELIMITER, output_text)
+        # Remove blanklines, if more than one in a row
+        output_text = re.sub(r"\n{3,}", "\n"*2, output_text)
+
+        return output_text
+
+    return wrapper
 
 
-def confirm_decision(callback_query: CallbackQuery) -> str:
-    original_text: str = callback_query.message.caption.split(INSTRUCTIONS_DELIMITER)[:-1][0]
+@formatting
+def post_video(message: Message, my_user: UserData) -> str:
+    # Instructions
+    instr = """\
+Натисни {yes}, щоб сповістити користувача, що відео сподобалось, або {no}, що не сподобалось.\
+"""
 
-    instructions = """\
-{delimiter} Повідомити користувачу, що відео Вам {no}сподобалось?\
-"""\
-    .format(
-        delimiter=INSTRUCTIONS_DELIMITER,
+    instr = instr.format(
+        yes=MD.VIDEO_LIKED_LABEL.value,
+        no=MD.VIDEO_DISLIKED_LABEL.value
     )
 
-    if callback_query.data == MD.VIDEO_LIKED_DATA:
-        instructions = instructions.format('')
-    if callback_query.data == MD.VIDEO_DISLIKED_DATA:
-        instructions = instructions.format('не ')
-
-    output_text = f'{original_text}{instructions}'
-    return output_text
-
-
-def confirmed_decision(callback_query: CallbackQuery) -> str:
-    original_text: str = callback_query.message.caption.split(INSTRUCTIONS_DELIMITER)[:-1][0]
-    me: str = callback_query.from_user.username  # Get username of the user's pressed teh button
-    username: str = re.findall(r"@\w+", original_text)[0]  # Get username of the user's sent a video
-
-    instructions = """\
-{emoji} @{me} сповістив(-ла) {username}, що відео {no}сподобалось.\
-"""\
-    .format(
-        me=me,
-        username=username,
-    )
-
-    if callback_query.data == MD.CONFIRMED_LIKED_DATA:
-        instructions = instructions.format(emoji=emojize(':check_mark:'), no='')
-    elif callback_query.data == MD.CONFIRMED_DISLIKED_DATA:
-        instructions = instructions.format(emoji=emojize(':cross_mark:'), no='не ')
-
-    output_text = f'{original_text}{instructions}'
-    return output_text
-
-
-def not_confirmed(callback_query: CallbackQuery) -> str:
-    original_text: str = callback_query.message.caption.split(INSTRUCTIONS_DELIMITER)[:-1][0]
-
-    instructions = """\
-{delimiter} Натисни {yes}, щоб сповістити користувача, що відео сподобалось, \
-або {no}, що не сподобалось.\
-"""\
-    .format(
-        delimiter=INSTRUCTIONS_DELIMITER,
-        yes=MD.VIDEO_LIKED_LABEL,
-        no=MD.VIDEO_DISLIKED_LABEL
-    )
-
-    output_text = f'{original_text}{instructions}'
-    return output_text
+    return {
+        "instr": instr,
+        "message": message,
+        "my_user": my_user
+        }

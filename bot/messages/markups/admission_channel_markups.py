@@ -1,7 +1,7 @@
 from aiogram.types import CallbackQuery, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from ...enums.admissions_channel_markup_data import AdmissionsChannelMarkupData as MD
+from ...enums import AdmissionsChannelMarkupData as MD
 
 
 def post_video() -> InlineKeyboardBuilder:

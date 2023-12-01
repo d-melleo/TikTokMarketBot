@@ -3,7 +3,7 @@ from typing import List
 from aiogram.types import BotCommand
 from aiogram.utils.i18n import gettext as _
 
-from ..enums.private_chat_roles import PrivateChatRoles
+from ..enums import PrivateChatRoles
 from db.userdata import UserData
 
 

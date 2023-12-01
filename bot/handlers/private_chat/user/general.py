@@ -1,12 +1,11 @@
 from aiogram import Bot, F, Router
 from aiogram.enums.content_type import ContentType
 from aiogram.filters import Command, MagicData
-from aiogram.types import CallbackQuery, Chat, Message
+from aiogram.types import CallbackQuery, Chat, Message, User
 
-from ...admission_channel.general import post_video
 from ....messages.markups import private_chat_markup as M
 from ....messages.text import private_chat_text as T
-from ....enums.private_chat_markup_data import PrivateChatMarkupData as MD
+from ....enums import PrivateChatMarkupData as MD
 from bot.tools.router_setup import register_filters
 from db.userdata import UserData
 
@@ -38,9 +37,12 @@ async def request_video(callback_query: CallbackQuery, bot: Bot, event_chat: Cha
 
 
 @router.message((F.video.duration <= 62) & (~F.media_group_id))
-async def received_video(message: Message, bot: Bot, event_chat: Chat, my_user: UserData):
+async def received_video(
+    message: Message, bot: Bot, event_chat: Chat, event_from_user: User):
+    from ...admission_channel.general import post_video
+
     # Send a video to the Admissions channel
-    await post_video(message, bot, my_user)
+    await post_video(message, bot, event_from_user)
 
     await bot.send_message(
         chat_id=event_chat.id,
@@ -62,3 +64,7 @@ async def received_other_media(message: Message, bot: Bot, event_chat: Chat):
         chat_id=event_chat.id,
         text=T.received_other_media()
     )
+
+
+async def notify_user_desicion(message: Message, bot: Bot):
+    print(message.caption_entities)

@@ -6,81 +6,73 @@
         pybabel compile -d locales -D messages
 """
 
-from datetime import datetime
-import string
-from typing import Any, Dict
 import re
 
-from aiogram.enums import MessageEntityType
-from aiogram.types import Message, MessageEntity, CallbackQuery, User
-from aiogram.utils.formatting import Text, Bold, TextMention, as_list, as_line
+from aiogram.types import Message, CallbackQuery
+from aiogram.utils.formatting import Text
 from emoji import emojize
 
 from ...enums import AdmissionsChannelMarkupData as MD
 from db.userdata import UserData
 
 
-def _get_caption(user: User, date: datetime) -> Text:
-    values = {
-        "date": "date",
-        "name": "name",
-        "emoji": "emoji",
-        "username": lambda: TextMention(user.username, user=user)
-    }
-
-    text = """\
-Надійшло нове відео! {emoji}
-
-Користувач: {username}
-Ім'я: {name}
-Дата: {date}
-"""
-
-    output = []  # Text arguments with resolved placeholders
-
-    for part in string.Formatter().parse(text):
-        # Separating text from placeholders
-        literal_text, placeholder = part[:2]
-        if literal_text:
-            # Append plain text into the list
-            output.append(literal_text)
-        if placeholder:
-            # Get value fro the placeholder and execute is calalble
-            value = values[placeholder]
-            if callable(value):
-                value = value()
-            output.append(value)
-
-    return Text(*output).as_kwargs()
-
-
 # Decorator, merges text with instructions
 def formatter(func) -> str:
+    video_caption=\
+"""\
+Надійшло нове відео! {emj}
+
+Користувач: @{username}
+Ім'я: {name}
+Дата: {date}\
+"""
+
     def wrapper(*args, **kwargs) -> str:
+        # Delimiter will separate caption from instructions
+        delimiter = "{}{}".format(emojize(":left_arrow_curving_right:"), " ")  # [↪️+intentional wtitespace]
+
         # Unpack arguments from the function
-        data: Dict[str, Any] = func(*args, **kwargs)
+        data = func(*args, **kwargs)
+        instr = data.get("instr")
 
-        # Instructions for administrators in channel
-        instr: str = data.get("instr")
-        # Initial messasge instance for the sent video
-        message: Message = data.get("message")
-        # User instance of the user that has initially sent a video in Bot
-        user: User = data.get("video_from_user")
+        if isinstance(data.get("message"), Message):
+            message: Message = data["message"]
+            if message.video:
+                
+                my_user: UserData = data["my_user"]
+                text = video_caption.format(
+                    emj=emojize(":party_popper:"),
+                    username=my_user.username,
+                    name=my_user.full_name,
+                    date=message.date.strftime('%d.%m.%Y')
+                )
+                if message.caption:
+                    text += f"\nКоментарій: {message.caption}"
+        else:
+            text = data["text"]
 
-        # Get user's instance from caption mention entity
-        if not user:
-            for entity in message.caption_entities:
-                if entity.type == MessageEntityType.TEXT_MENTION:
-                    user: User = entity.user
+        # Remove old instructions, whitespaces, more than one blank line in a row
+        text = text.split(delimiter)[0].strip('\n').strip()
 
-        text = _get_caption(user, date=message.date.strftime('%d.%m.%Y'))
-        return text
+        if data.get("delimiter"):
+            delimiter = data["delimiter"]
+
+        # Add delimiter to the instructions
+        instr = f"{delimiter} {instr}".strip()
+        # Merge new instructions to the old text
+        output_text = f"{text}{instr}"
+        # Append a blank line between the text and instructions
+        output_text = re.sub(delimiter, "\n"*2 + delimiter, output_text)
+        # Remove blanklines, if more than one in a row
+        output_text = re.sub(r"\n{3,}", "\n"*2, output_text)
+
+        return output_text
 
     return wrapper
 
 
 @formatter
-def post_video(message: Message, video_from_user: User):
+def post_video(message: Message, my_user: UserData):
     # Instructions
     instr = """\
 Натисни {yes}, щоб сповістити користувача, що відео сподобалось, \
@@ -95,7 +87,7 @@ def post_video(message: Message, video_from_user: User):
     return {
         "instr": instr,
         "message": message,
-        "video_from_user": video_from_user,
+        "my_user": my_user
         }
 
 
@@ -111,12 +103,12 @@ def confirm_decision(callback_query: CallbackQuery):
 
     return {
         "instr": instr,
-        "message": callback_query.message
-        }
+        "text": callback_query.message.caption
+    }
 
 
 @formatter
-def confirmed_decision(callback_query: CallbackQuery, video_from_user: User):
+def confirmed_decision(callback_query: CallbackQuery):
     # Instructions
     instr = "@{me} сповістив(-ла) користувача, що відео {no}сподобалось."
 
@@ -140,7 +132,7 @@ def confirmed_decision(callback_query: CallbackQuery, video_from_user: User):
 
 
 @formatter
-def not_confirmed(callback_query: CallbackQuery, video_from_user: User):
+def not_confirmed(callback_query: CallbackQuery):
     # Instructions
     instr = """\
 Натисни {yes}, щоб сповістити користувача, що відео сподобалось, \

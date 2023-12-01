@@ -2,7 +2,7 @@ from aiogram.types import InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 from aiogram.utils.i18n import gettext as _
 
-from ...enums.private_chat_markup_data import PrivateChatMarkupData as MD
+from ...enums import PrivateChatMarkupData as MD
 
 
 def send_video() -> InlineKeyboardBuilder:

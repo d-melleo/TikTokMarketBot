@@ -3,7 +3,7 @@ from typing import Any, Dict, List, Optional, Union
 
 from aiogram.types import BotCommand, User
 
-from bot.enums.private_chat_roles import PrivateChatRoles
+from bot.enums import PrivateChatRoles
 from db.connect import DBConnect
 
 

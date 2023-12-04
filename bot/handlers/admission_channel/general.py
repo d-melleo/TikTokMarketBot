@@ -1,6 +1,7 @@
 from typing import Any, Dict, Union
 
 from aiogram import Bot, F, Router
+from aiogram.enums import MessageEntityType
 from aiogram.types import CallbackQuery, Chat, Message, User
 
 from ...enums import AdmissionsChannelMarkupData as MD
@@ -21,8 +22,7 @@ async def post_video(
     event_from_user: User,
     channel_id: Union[int, str] = ADMISSIONS_CHANNEL_ID
 ) -> None:
-    video_from_user: User = event_from_user
-    caption_data: Dict[str, Any] = T.post_video(message, video_from_user)
+    caption_data: Dict[str, Any] = T.post_video(message, event_from_user)
 
     message = await bot.send_video(
         chat_id=int(channel_id),
@@ -36,10 +36,13 @@ async def post_video(
 
 @router.callback_query(F.data.in_({MD.VIDEO_LIKED_DATA, MD.VIDEO_DISLIKED_DATA}))
 async def confirm_decision(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
+    caption_data: Dict[str, Any] = T.confirm_decision(callback_query)
+
     await bot.edit_message_caption(
         chat_id=event_chat.id,
         message_id=callback_query.message.message_id,
-        caption=T.confirm_decision(callback_query),
+        caption=caption_data.get('text'),
+        caption_entities=caption_data.get('entities'),
         reply_markup=M.confirm_decision(callback_query.data)
     )
 
@@ -48,23 +51,29 @@ async def confirm_decision(callback_query: CallbackQuery, bot: Bot, event_chat: 
 async def confirmed_decision(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
     from ..private_chat.user.general import notify_user_desicion
 
+    caption_data: Dict[str, Any] = T.confirmed_decision(callback_query)
+
     message = await bot.edit_message_caption(
         chat_id=event_chat.id,
         message_id=callback_query.message.message_id,
-        caption=T.confirmed_decision(callback_query),
+        caption=caption_data.get('text'),
+        caption_entities=caption_data.get('entities'),
         reply_markup=None
     )
 
     await unpin_post(message, bot)
-    await notify_user_desicion(message, bot)
+    await notify_user_desicion(message, bot, callback_query.data)
 
 
 @router.callback_query(F.data == MD.NOT_CONFIRMED_DATA)
 async def not_confirmed(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
+    caption_data: Dict[str, Any] = T.not_confirmed(callback_query)
+
     await bot.edit_message_caption(
         chat_id=event_chat.id,
         message_id=callback_query.message.message_id,
-        caption=T.not_confirmed(callback_query),
+        caption=caption_data.get('text'),
+        caption_entities=caption_data.get('entities'),
         reply_markup=M.post_video()
     )
 

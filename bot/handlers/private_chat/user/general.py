@@ -1,5 +1,5 @@
 from aiogram import Bot, F, Router
-from aiogram.enums.content_type import ContentType
+from aiogram.enums import ContentType, MessageEntityType
 from aiogram.filters import Command, MagicData
 from aiogram.types import CallbackQuery, Chat, Message, User
 
@@ -66,5 +66,12 @@ async def received_other_media(message: Message, bot: Bot, event_chat: Chat):
     )
 
 
-async def notify_user_desicion(message: Message, bot: Bot):
-    print(message.caption_entities)
+async def notify_user_desicion(message: Message, bot: Bot, decision: str):
+    for entity in message.caption_entities:
+        if entity.type == MessageEntityType.TEXT_MENTION:
+            video_from_user: User = entity.user
+    
+    await bot.send_message(
+        chat_id=video_from_user.id,
+        text=T.notify_user_desicion(decision)
+    )

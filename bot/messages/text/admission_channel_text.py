@@ -20,22 +20,7 @@ from ...enums import AdmissionsChannelMarkupData as MD
 from db.userdata import UserData
 
 
-def _get_caption(user: User, date: datetime) -> Text:
-    values = {
-        "date": "date",
-        "name": "name",
-        "emoji": "emoji",
-        "username": lambda: TextMention(user.username, user=user)
-    }
-
-    text = """\
-Надійшло нове відео! {emoji}
-
-Користувач: {username}
-Ім'я: {name}
-Дата: {date}
-"""
-
+def _formatter(text: str, values: Dict[str, Any]) -> Dict[str, Any]:
     output = []  # Text arguments with resolved placeholders
 
     for part in string.Formatter().parse(text):
@@ -55,31 +40,71 @@ def _get_caption(user: User, date: datetime) -> Text:
 
 
 # Decorator, merges text with instructions
-def formatter(func) -> str:
+def _get_caption(func) -> str:
+    video_caption=\
+"""\
+Надійшло нове відео! {emoji}
+
+Користувач: {username}
+Ім'я: {name}
+Дата: {date}\
+"""
+
     def wrapper(*args, **kwargs) -> str:
+        # Delimiter will separate caption from instructions
+        # By default: ↪️+intentional wtitespace
+        delimiter = "{}{}".format(emojize(":left_arrow_curving_right:"), " ")
+
         # Unpack arguments from the function
         data: Dict[str, Any] = func(*args, **kwargs)
-
-        # Instructions for administrators in channel
-        instr: str = data.get("instr")
+        # Get new instructions
+        instr = data.get("instr")
         # Initial messasge instance for the sent video
-        message: Message = data.get("message")
+        event: Message | CallbackQuery = data.get("event")
         # User instance of the user that has initially sent a video in Bot
         user: User = data.get("video_from_user")
 
-        # Get user's instance from caption mention entity
-        if not user:
-            for entity in message.caption_entities:
-                if entity.type == MessageEntityType.TEXT_MENTION:
-                    user: User = entity.user
+        # Initial post is built on a template
+        if isinstance(event, Message):
+            if event.video:
+                text = video_caption
+                if event.caption:
+                    text += "\n" + "Коментарій: {comment}"
+                text += f"\n\n{delimiter}{instr}"
 
-        text = _get_caption(user, date=message.date.strftime('%d.%m.%Y'))
-        return text
+                return _formatter(
+                    text,
+                    values={
+                        "emoji": emojize(":party_popper:"),
+                        "username": lambda: TextMention(f"@{user.username}", user=user),
+                        "name": user.full_name,
+                        "date": event.date,
+                        "comment": lambda: Bold(event.caption)
+                    }
+                )
+
+        elif isinstance(event, CallbackQuery):
+            # Initial text is being reused and insructions replaced
+            text = event.message.caption
+            entities = event.message.caption_entities
+            # Remove old instructions, whitespaces and blank lines
+            text = text.split(delimiter)[0].strip('\n').strip()
+            # Replace delimiter in final message edit
+            delimiter = data.get("delimiter", delimiter)
+            # Merge new instructions with the old text
+            output_text = f"{text}\n\n{delimiter}{instr}"
+            # Remove blanklines, if more than one in a row
+            output_text = re.sub(r"\n{3,}", "\n"*2, output_text)
+
+            return {
+                "text": output_text,
+                "entities": entities
+            }
 
     return wrapper
 
 
-@formatter
+@_get_caption
 def post_video(message: Message, video_from_user: User):
     # Instructions
     instr = """\
@@ -94,12 +119,12 @@ def post_video(message: Message, video_from_user: User):
 
     return {
         "instr": instr,
-        "message": message,
+        "event": message,
         "video_from_user": video_from_user,
         }
 
 
-@formatter
+@_get_caption
 def confirm_decision(callback_query: CallbackQuery):
     # Instructions
     instr = "Повідомити користувачу, що відео Вам {no}сподобалось?"
@@ -111,12 +136,12 @@ def confirm_decision(callback_query: CallbackQuery):
 
     return {
         "instr": instr,
-        "message": callback_query.message
+        "event": callback_query
         }
 
 
-@formatter
-def confirmed_decision(callback_query: CallbackQuery, video_from_user: User):
+@_get_caption
+def confirmed_decision(callback_query: CallbackQuery):
     # Instructions
     instr = "@{me} сповістив(-ла) користувача, що відео {no}сподобалось."
 
@@ -134,13 +159,13 @@ def confirmed_decision(callback_query: CallbackQuery, video_from_user: User):
 
     return {
         "instr": instr,
-        "text": callback_query.message.caption,
+        "event": callback_query,
         "delimiter": emj
     }
 
 
-@formatter
-def not_confirmed(callback_query: CallbackQuery, video_from_user: User):
+@_get_caption
+def not_confirmed(callback_query: CallbackQuery):
     # Instructions
     instr = """\
 Натисни {yes}, щоб сповістити користувача, що відео сподобалось, \
@@ -154,5 +179,5 @@ def not_confirmed(callback_query: CallbackQuery, video_from_user: User):
 
     return {
         "instr": instr,
-        "text": callback_query.message.caption
+        "event": callback_query
     }

@@ -13,6 +13,8 @@ from textwrap import dedent
 from aiogram.utils.i18n import gettext as _
 from emoji import emojize
 
+from ...enums import AdmissionsChannelMarkupData as MD
+
 
 def start() -> str:
     return dedent(_(
@@ -84,3 +86,17 @@ def received_other_media() -> str:
 """)).format(
     emojize(':cross_mark:')
 )
+
+
+def notify_user_desicion(decision: str) -> str:
+    if decision == MD.CONFIRMED_LIKED_DATA:
+        return """\
+Congratulations! Your video was a hit!
+We'll be reaching out to you very soon to dive into further discussions.\
+"""
+    elif decision == MD.CONFIRMED_DISLIKED_DATA:
+        return """\
+Hey, thanks a bunch for your recent video! \
+Although we've decided not to move forward with it this time, \
+we're super excited to see more of your content!\
+"""

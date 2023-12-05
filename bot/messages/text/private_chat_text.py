@@ -7,7 +7,7 @@
 : pybabel compile -d locales -D messages
 
 """
-
+from typing import Dict
 from textwrap import dedent
 
 from aiogram.utils.i18n import gettext as _
@@ -42,16 +42,18 @@ Sorry, but you cannot send messages at the moment. {}\
 )
 
 
-def on_hold(days: int, hours: int, minutes: int, seconds: int) -> str:
+def on_hold(data: Dict[str, int]) -> str:
+    days, hours, minutes, seconds = data.values()
+
     return dedent(_(
 """\
 {emoji} We are still reviewing your previous video. Once reviewed, you will be able to send us more. \
-Or, after{days}d{hours}h{minutes}m, if we don't complete the review by the time.\
+Or, after{days}{hours}{minutes}, if we don't complete the review by the time.\
 """)).format(
     emoji=emojize(':see-no-evil_monkey:'),
-    days=f' {days}' if days else '',
-    hours= ' {hours}' if hours else '',
-    minutes=f' {minutes}' if seconds > 60 else ' 1')
+    days=f' {days}d' if days else '',
+    hours=f' {hours}h' if hours else '',
+    minutes=f' {minutes}m' if seconds > 60 else ' 1')
 
 
 def request_video() -> str:

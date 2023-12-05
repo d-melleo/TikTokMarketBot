@@ -4,6 +4,7 @@ from aiogram.filters import MagicData
 
 from .user.general import router as private_chat_general
 from .user.banned import router as private_chat_banned
+from .user.on_hold import router as private_chat_on_hold
 
 from ...middlewares import (
     DatabaseMiddleware,
@@ -23,7 +24,8 @@ register_filters(router, filters)
 
 router.include_routers(
     private_chat_general,
-    private_chat_banned
+    private_chat_banned,
+    private_chat_on_hold
 )
 
 register_middlewares(

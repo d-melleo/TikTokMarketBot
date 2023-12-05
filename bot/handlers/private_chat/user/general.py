@@ -16,7 +16,8 @@ from db.userdata import UserData
 router = Router(name="private_chat_general")
 
 filters = {
-    MagicData(~F.my_user.is_banned)
+    MagicData(~F.my_user.is_banned),
+    (MagicData(F.current_utc_time > F.my_user.hold_until))
 }
 # Register filters for this sub router.
 register_filters(router, filters)

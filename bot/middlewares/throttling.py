@@ -2,9 +2,9 @@ from datetime import datetime
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware
+from aiogram.enums.chat_type import ChatType
 from aiogram.types import TelegramObject
 from aiogram.types import Chat, Update
-from aiogram.enums.chat_type import ChatType
 from cachetools import TTLCache
 
 from config.environment_vars import CHANNELS
@@ -25,8 +25,6 @@ class ThrottlingMiddleware(BaseMiddleware):
         event: Update,
         data: Dict[str, Any],
     ) -> Any:
-        print("THROTTLING IN")
-
         event_chat: Chat = data[EVENT_CHAT_KEY]
 
         # Execute a handler only for my channels.
@@ -48,6 +46,4 @@ class ThrottlingMiddleware(BaseMiddleware):
         data[CURRENT_UTC_TIME_KEY] = datetime.utcnow()
 
         # Execute handler.
-        await handler(event, data)
-
-        print("THROTTLING OUT")
+        return await handler(event, data)

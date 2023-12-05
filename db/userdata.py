@@ -68,25 +68,25 @@ class UserData:
     async def update_last_activity(self, current_utc_time: datetime) -> None:
         """Update the last activity timestamp in the database after a handler's execution."""
         self.last_activity = current_utc_time
+
         await DBConnect.collection.update_one(
             {'_id': self._id},
             {'$set': {'last_activity': current_utc_time}}
         )
 
     @staticmethod
-    async def hold(user_id: int | str, start_date: datetime, hold_for_hrs: int):
-        hold_until = start_date + timedelta(hours=4)
+    async def hold(user_id: int | str, current_utc_time: datetime, hold_for_hrs: int):
+        hold_until = current_utc_time + timedelta(hours=hold_for_hrs)
         await DBConnect.collection.update_one(
             {'_id': user_id},
             {'$set': {'hold_until': hold_until}}
         )
 
     @staticmethod
-    async def release(user_id: int | str):
-        time_now = datetime.utcnow()
+    async def release(user_id: int | str, current_utc_time: datetime):
         await DBConnect.collection.update_one(
             {'_id': user_id},
-            {'$set': {'hold_until': time_now}}
+            {'$set': {'hold_until': current_utc_time}}
         )
 
 

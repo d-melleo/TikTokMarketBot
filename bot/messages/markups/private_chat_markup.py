@@ -10,6 +10,6 @@ def send_video() -> InlineKeyboardBuilder:
 
     keyboard.add(InlineKeyboardButton(
         text=_(MD.SEND_VIDEO_LABEL.value),
-        callback_data=MD.SEND_VIDEO_DATA.value))
+        callback_data=MD.SEND_VIDEO_DATA))
 
     return keyboard.as_markup()

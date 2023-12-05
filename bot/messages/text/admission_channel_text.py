@@ -6,12 +6,13 @@
         pybabel compile -d locales -D messages
 """
 
+from datetime import datetime
 import re
 import string
 from typing import Any, Dict
 
 from aiogram.types import CallbackQuery, Message, User
-from aiogram.utils.formatting import Bold, Text, TextMention
+from aiogram.utils.formatting import Bold, Italic, Spoiler, Text, TextMention
 from emoji import emojize
 
 from ...enums import AdmissionsChannelMarkupData as MD
@@ -37,17 +38,17 @@ def _formatter(text: str, values: Dict[str, Any]) -> Dict[str, Any]:
 
 
 # Decorator, merges text with instructions
-def _get_caption(func) -> str:
+def _get_caption(func) -> Dict[str, Any]:
     video_caption=\
 """\
 Надійшло нове відео! {emoji}
 
 Користувач: {username}
 Ім'я: {name}
-Дата: {date}\
+{utc}: {date}\
 """
 
-    def wrapper(*args, **kwargs) -> str:
+    def wrapper(*args, **kwargs) -> Dict[str, Any]:
         # Delimiter will separate caption from instructions
         # By default: ↪️+intentional wtitespace
         delimiter = "{}{}".format(emojize(":left_arrow_curving_right:"), " ")
@@ -74,9 +75,10 @@ def _get_caption(func) -> str:
                     values={
                         "emoji": emojize(":party_popper:"),
                         "username": lambda: TextMention(f"@{user.username}", user=user),
-                        "name": user.full_name,
-                        "date": event.date,
-                        "comment": lambda: Bold(event.caption)
+                        "name": lambda: TextMention(user.full_name, user=user),
+                        "utc": Italic("Дата (UTC)"),
+                        "date": data.get("current_utc_time", event.date).strftime("%d.%m.%Y %H:%M"),
+                        "comment": lambda: Spoiler(event.caption)
                     }
                 )
 
@@ -102,7 +104,11 @@ def _get_caption(func) -> str:
 
 
 @_get_caption
-def post_video(message: Message, video_from_user: User):
+def post_video(
+    message: Message,
+    video_from_user: User,
+    current_utc_time: datetime
+) -> Dict[str, Any]:
     # Instructions
     instr = """\
 Натисни {yes}, щоб сповістити користувача, що відео сподобалось, \
@@ -118,11 +124,12 @@ def post_video(message: Message, video_from_user: User):
         "instr": instr,
         "event": message,
         "video_from_user": video_from_user,
+        "current_utc_time": current_utc_time
         }
 
 
 @_get_caption
-def confirm_decision(callback_query: CallbackQuery):
+def confirm_decision(callback_query: CallbackQuery) -> Dict[str, Any]:
     # Instructions
     instr = "Повідомити користувачу, що відео Вам {no}сподобалось?"
 
@@ -138,7 +145,7 @@ def confirm_decision(callback_query: CallbackQuery):
 
 
 @_get_caption
-def confirmed_decision(callback_query: CallbackQuery):
+def confirmed_decision(callback_query: CallbackQuery) -> Dict[str, Any]:
     # Instructions
     instr = "@{me} сповістив(-ла) користувача, що відео {no}сподобалось."
 
@@ -162,7 +169,7 @@ def confirmed_decision(callback_query: CallbackQuery):
 
 
 @_get_caption
-def not_confirmed(callback_query: CallbackQuery):
+def not_confirmed(callback_query: CallbackQuery) -> Dict[str, Any]:
     # Instructions
     instr = """\
 Натисни {yes}, щоб сповістити користувача, що відео сподобалось, \

@@ -25,8 +25,6 @@ class DatabaseMiddleware(BaseMiddleware):
 
         # Check if the event is from a private chat.
         if event_chat.type == ChatType.PRIVATE:
-            print("DATABASE IN")
-
             # Retrieve the Telegram user instance from the 'data' dictionary.
             tg_user: User = data[EVENT_FROM_USER_KEY]
 
@@ -44,8 +42,6 @@ class DatabaseMiddleware(BaseMiddleware):
 
             # Update the last activity timestamp.
             await my_user.update_last_activity(current_utc_time)
-
-            print("DATABASE OUT")
 
         else:
             # For non-private chats, directly invoke the handler

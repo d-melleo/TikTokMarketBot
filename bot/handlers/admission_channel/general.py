@@ -1,7 +1,7 @@
+from datetime import datetime
 from typing import Any, Dict, Union
 
 from aiogram import Bot, F, Router
-from aiogram.enums import MessageEntityType
 from aiogram.types import CallbackQuery, Chat, Message, User
 
 from ...enums import AdmissionsChannelFlags as AF
@@ -9,7 +9,6 @@ from ...enums import AdmissionsChannelMarkupData as MD
 from ...messages.markups import admission_channel_markups as M
 from ...messages.text import admission_channel_text as T
 from config.environment_vars import CHANNELS
-from db.userdata import UserData
 
 ADMISSIONS_CHANNEL_ID: int = CHANNELS['admissions']
 
@@ -21,9 +20,10 @@ async def post_video(
     message: Message,
     bot: Bot,
     event_from_user: User,
+    current_utc_time: datetime,
     channel_id: Union[int, str] = ADMISSIONS_CHANNEL_ID
 ) -> None:
-    caption_data: Dict[str, Any] = T.post_video(message, event_from_user)
+    caption_data: Dict[str, Any] = T.post_video(message, event_from_user, current_utc_time)
 
     message = await bot.send_video(
         chat_id=int(channel_id),
@@ -52,7 +52,12 @@ async def confirm_decision(callback_query: CallbackQuery, bot: Bot, event_chat: 
     F.data.in_({MD.CONFIRMED_LIKED_DATA, MD.CONFIRMED_DISLIKED_DATA}),
     flags={AF.I18N_ADMISSIONS: True}
 )
-async def confirmed_decision(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
+async def confirmed_decision(
+    callback_query: CallbackQuery,
+    bot: Bot,
+    event_chat: Chat,
+    current_utc_time: datetime
+) -> None:
     from ..private_chat.user.general import notify_user_desicion
 
     caption_data: Dict[str, Any] = T.confirmed_decision(callback_query)
@@ -66,7 +71,7 @@ async def confirmed_decision(callback_query: CallbackQuery, bot: Bot, event_chat
     )
 
     await unpin_post(message, bot)
-    await notify_user_desicion(message, bot, callback_query.data)
+    await notify_user_desicion(message, bot, callback_query.data, current_utc_time)
 
 
 @router.callback_query(F.data == MD.NOT_CONFIRMED_DATA)

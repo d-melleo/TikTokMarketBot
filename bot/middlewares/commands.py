@@ -15,8 +15,6 @@ class CommandsMiddleware(BaseMiddleware):
             event: TelegramObject,
             data: Dict[str, Any],
         ) -> Any:
-        print("COMMANDS IN")
-
         # Retrieve the bot instance from the data dictionary.
         bot: Bot = data['bot']
 
@@ -32,6 +30,4 @@ class CommandsMiddleware(BaseMiddleware):
             scope=BotCommandScopeChat(chat_id=my_user._id))
         
         # Execute the handler.
-        await handler(event, data)
-
-        print("COMMANDS OUT")
+        return await handler(event, data)

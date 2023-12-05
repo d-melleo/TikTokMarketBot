@@ -1,4 +1,4 @@
-from aiogram import Bot, F, Router
+from aiogram import Bot, F, flags, Router
 from aiogram.enums import ContentType, MessageEntityType
 from aiogram.filters import Command, MagicData
 from aiogram.types import CallbackQuery, Chat, Message, User
@@ -43,6 +43,9 @@ async def received_video(
 
     # Send a video to the Admissions channel
     await post_video(message, bot, event_from_user)
+    
+    # Set a user on hold for 4 hours, won't be abel to send new videos
+    await UserData.hold(event_from_user.id, message.date, hold_for_hrs=4)
 
     await bot.send_message(
         chat_id=event_chat.id,
@@ -73,5 +76,8 @@ async def notify_user_desicion(message: Message, bot: Bot, decision: str):
     
     await bot.send_message(
         chat_id=video_from_user.id,
-        text=T.notify_user_desicion(decision)
+        text=T.notify_user_desicion(decision),
+        reply_markup=M.send_video()
     )
+    # Allow user to send videos again
+    await UserData.release(video_from_user.id)

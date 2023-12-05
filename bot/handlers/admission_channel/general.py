@@ -4,6 +4,7 @@ from aiogram import Bot, F, Router
 from aiogram.enums import MessageEntityType
 from aiogram.types import CallbackQuery, Chat, Message, User
 
+from ...enums import AdmissionsChannelFlags as AF
 from ...enums import AdmissionsChannelMarkupData as MD
 from ...messages.markups import admission_channel_markups as M
 from ...messages.text import admission_channel_text as T
@@ -47,7 +48,10 @@ async def confirm_decision(callback_query: CallbackQuery, bot: Bot, event_chat: 
     )
 
 
-@router.callback_query(F.data.in_({MD.CONFIRMED_LIKED_DATA, MD.CONFIRMED_DISLIKED_DATA}))
+@router.callback_query(
+    F.data.in_({MD.CONFIRMED_LIKED_DATA, MD.CONFIRMED_DISLIKED_DATA}),
+    flags={AF.I18N_ADMISSIONS: True}
+)
 async def confirmed_decision(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
     from ..private_chat.user.general import notify_user_desicion
 

@@ -6,18 +6,15 @@
         pybabel compile -d locales -D messages
 """
 
-from datetime import datetime
+import re
 import string
 from typing import Any, Dict
-import re
 
-from aiogram.enums import MessageEntityType
-from aiogram.types import Message, MessageEntity, CallbackQuery, User
-from aiogram.utils.formatting import Text, Bold, TextMention, as_list, as_line
+from aiogram.types import CallbackQuery, Message, User
+from aiogram.utils.formatting import Bold, Text, TextMention
 from emoji import emojize
 
 from ...enums import AdmissionsChannelMarkupData as MD
-from db.userdata import UserData
 
 
 def _formatter(text: str, values: Dict[str, Any]) -> Dict[str, Any]:

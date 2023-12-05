@@ -30,7 +30,7 @@ class CommandsMiddleware(BaseMiddleware):
         await bot.set_my_commands(
             commands=my_user.commands,
             scope=BotCommandScopeChat(chat_id=my_user._id))
-
+        
         # Execute the handler.
         await handler(event, data)
 

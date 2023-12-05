@@ -3,7 +3,8 @@ from aiogram.enums.chat_type import ChatType
 from aiogram.filters import MagicData
 
 from ..admission_channel.general import router as admissions_channel_general
-from ...tools.router_setup import register_filters
+from ...middlewares import LocalizationMiddleware
+from ...tools.router_setup import register_filters, register_middlewares
 from config.environment_vars import CHANNELS
 
 ADMISSIONS_KEY = "admissions"
@@ -20,4 +21,11 @@ register_filters(router, filters)
 
 router.include_routers(
     admissions_channel_general
+)
+
+register_middlewares(
+    router=router,
+    inner=(
+        LocalizationMiddleware,
+    )
 )

@@ -73,6 +73,22 @@ class UserData:
             {'$set': {'last_activity': current_utc_time}}
         )
 
+    @staticmethod
+    async def hold(user_id: int | str, start_date: datetime, hold_for_hrs: int):
+        hold_until = start_date + timedelta(hours=4)
+        await DBConnect.collection.update_one(
+            {'_id': user_id},
+            {'$set': {'hold_until': hold_until}}
+        )
+
+    @staticmethod
+    async def release(user_id: int | str):
+        time_now = datetime.utcnow()
+        await DBConnect.collection.update_one(
+            {'_id': user_id},
+            {'$set': {'hold_until': time_now}}
+        )
+
 
 async def get_my_user(
     tg_user: User,

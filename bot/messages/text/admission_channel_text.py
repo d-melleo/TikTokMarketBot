@@ -8,33 +8,14 @@
 
 from datetime import datetime
 import re
-import string
 from typing import Any, Dict
 
 from aiogram.types import CallbackQuery, Message, User
-from aiogram.utils.formatting import Bold, Italic, Spoiler, Text, TextMention
+from aiogram.utils.formatting import Italic, Spoiler, TextMention
 from emoji import emojize
 
 from ...enums import AdmissionsChannelMarkupData as MD
-
-
-def _formatter(text: str, values: Dict[str, Any]) -> Dict[str, Any]:
-    output = []  # Text arguments with resolved placeholders
-
-    for part in string.Formatter().parse(text):
-        # Separating text from placeholders
-        literal_text, placeholder = part[:2]
-        if literal_text:
-            # Append plain text into the list
-            output.append(literal_text)
-        if placeholder:
-            # Get value fro the placeholder and execute is calalble
-            value = values[placeholder]
-            if callable(value):
-                value = value()
-            output.append(value)
-
-    return Text(*output).as_kwargs()
+from ...tools.text_formatter import text_formatter
 
 
 # Decorator, merges text with instructions
@@ -70,7 +51,7 @@ def _get_caption(func) -> Dict[str, Any]:
                     text += "\n" + "Коментарій: {comment}"
                 text += f"\n\n{delimiter}{instr}"
 
-                return _formatter(
+                return text_formatter(
                     text,
                     values={
                         "emoji": emojize(":party_popper:"),

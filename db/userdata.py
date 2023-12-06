@@ -2,6 +2,7 @@ from datetime import datetime, timedelta
 from typing import Any, Dict, List, Optional, Union
 
 from aiogram.types import BotCommand, User
+from pymongo.results import UpdateResult
 
 from bot.enums import PrivateChatRoles
 from db.connect import DBConnect
@@ -88,6 +89,15 @@ class UserData:
             {'_id': user_id},
             {'$set': {'hold_until': current_utc_time}}
         )
+
+
+    @staticmethod
+    async def ban(username: str) -> bool:
+        result: UpdateResult = await DBConnect.collection.update_one(
+            {'username': username},
+            {'$set': {'is_banned': True}}
+        )
+        return result.raw_result['updatedExisting']
 
 
 async def get_my_user(

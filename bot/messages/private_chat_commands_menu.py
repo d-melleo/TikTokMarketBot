@@ -3,44 +3,44 @@ from typing import List
 from aiogram.types import BotCommand
 from aiogram.utils.i18n import gettext as _
 
-from ..enums import PrivateChatRoles
+from ..enums import commands, PrivateChatRoles
 from db.userdata import UserData
 
 
 class UserCommands:
     def __init__(self) -> None:
-        self.START = BotCommand(command="start", description=_("Start"))
-        self.HELP = BotCommand(command="help", description=_("Help"))
-        self.LANGUAGE = BotCommand(command="language", description=_("Language"))
+        self.START = BotCommand(command=commands.User.START, description=_("Start"))
+        self.HELP = BotCommand(command=commands.User.HELP, description=_("Help"))
+        self.LANGUAGE = BotCommand(command=commands.User.LANGUAGE, description=_("Language"))
 
 
 class AdminCommands(UserCommands):
     def __init__(self) -> None:
         super().__init__()
 
-        self.BAN = BotCommand(command="ban", description=_("Ban a user"))
-        self.UNBAN = BotCommand(command="unban", description=_("Unban a user"))
-        self.HOLD = BotCommand(command="hold", description=_("Prevent a user from sending videos"))
-        self.RELEASE = BotCommand(command="release", description=_("Allow a user to send videos"))
-        self.GET_USER = BotCommand(command="get_user", description=_("Get user's data from DB"))
-        self.BAN_LIST = BotCommand(command="ban_list", description=_("Show banned users"))
-        self.HOLD_LIST = BotCommand(command="hold_list", description=_("Show users on hold"))
+        self.BAN = BotCommand(command=commands.Admin.BAN, description=_("Ban a user"))
+        self.UNBAN = BotCommand(command=commands.Admin.UNBAN, description=_("Unban a user"))
+        self.HOLD = BotCommand(command=commands.Admin.HOLD, description=_("Prevent a user from sending videos"))
+        self.RELEASE = BotCommand(command=commands.Admin.RELEASE, description=_("Allow a user to send videos"))
+        self.GET_USER = BotCommand(command=commands.Admin.GET_USER, description=_("Get user's data from DB"))
+        self.BAN_LIST = BotCommand(command=commands.Admin.BAN_LIST, description=_("Show banned users"))
+        self.HOLD_LIST = BotCommand(command=commands.Admin.HOLD_LIST, description=_("Show users on hold"))
 
 
 class SuperAdminCommands(AdminCommands):
     def __init__(self) -> None:
         super().__init__()
 
-        self.ADD_ADMIN = BotCommand(command="add_admin", description=_("Add a new admin"))
-        self.REMOVE_ADMIN = BotCommand(command="remove_admin", description=_("Remove an admin"))
+        self.ADD_ADMIN = BotCommand(command=commands.SuperAdmin.ADD_ADMIN, description=_("Add a new admin"))
+        self.REMOVE_ADMIN = BotCommand(command=commands.SuperAdmin.REMOVE_ADMIN, description=_("Remove an admin"))
 
 
 class CreatorCommands(SuperAdminCommands):
     def __init__(self) -> None:
         super().__init__()
 
-        self.ADD_SUPERADMIN = BotCommand(command="add_superadmin", description=_("Add a new superadmin"))
-        self.REMOVE_SUPERADMIN = BotCommand(command="remove_superadmin", description=_("Remove a superadmin"))
+        self.ADD_SUPERADMIN = BotCommand(command=commands.Creator.ADD_SUPERADMIN, description=_("Add a new superadmin"))
+        self.REMOVE_SUPERADMIN = BotCommand(command=commands.Creator.REMOVE_SUPERADMIN, description=_("Remove a superadmin"))
 
 
 def get_my_commands(my_user: UserData) -> List[BotCommand]:

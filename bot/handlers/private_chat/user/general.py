@@ -8,6 +8,7 @@ from aiogram.types import CallbackQuery, Chat, Message, User
 from ....messages.markups import private_chat_markup as M
 from ....messages.text import private_chat_text as T
 from ....enums import PrivateChatMarkupData as MD
+from ....enums import commands
 from bot.tools.router_setup import register_filters
 from bot.tools.get_mentioned_user import get_mentioned_user
 from db.userdata import UserData
@@ -23,7 +24,7 @@ filters = {
 register_filters(router, filters)
 
 
-@router.message(Command("start"))
+@router.message(Command(commands.User.START))
 async def start(message: Message, bot: Bot, event_chat: Chat):
     await bot.send_message(
         chat_id=event_chat.id,

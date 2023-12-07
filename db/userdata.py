@@ -92,12 +92,16 @@ class UserData:
 
 
     @staticmethod
-    async def ban(username: str) -> bool:
-        result: UpdateResult = await DBConnect.collection.update_one(
-            {'username': username},
-            {'$set': {'is_banned': True}}
-        )
-        return result.raw_result['updatedExisting']
+    async def ban(my_role: str, ban_username: str) -> bool:
+        db_user = await DBConnect.collection.find_one({'username': ban_username})
+        permission: bool = PrivateChatRoles.superiority(my_role, db_user.get("role"))
+        
+        if permission:
+            result: UpdateResult = await DBConnect.collection.update_one(
+                {'username': ban_username},
+                {'$set': {'is_banned': True}}
+            )
+            return result.raw_result['updatedExisting']
 
 
 async def get_my_user(

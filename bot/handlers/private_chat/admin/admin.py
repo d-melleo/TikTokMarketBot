@@ -30,11 +30,14 @@ pattern = r"^/\w+\ +\w+$"
 
 @router.message(Command(commands.Admin.BAN), F.text.regexp(pattern))
 async def ban(message: Message, bot: Bot, **kwargs):
+    my_user: UserData = kwargs.get("my_user")
     username = kwargs.get("username")
     if not username:
-        username: str = message.text.split()[1]
+        username: str = ''.join(message.text.split()[1:])
+    username = username.strip("\n").strip()
+
     if username != message.from_user.username:
-        result: bool = await UserData.ban(username)
+        result: bool = await UserData.ban(my_user.role, username)
     else:
         result = None
 
@@ -45,53 +48,55 @@ async def ban(message: Message, bot: Bot, **kwargs):
 
 
 @router.message(Command(commands.Admin.UNBAN), F.text.regexp(pattern))
-async def unban(message: Message, bot: Bot, username: str = None, *args):
+async def unban(message: Message, bot: Bot, **kwargs):
     ...
 
 
 @router.message(Command(commands.Admin.HOLD), F.text.regexp(pattern))
-async def hold(message: Message, bot: Bot, username: str = None, *args):
+async def hold(message: Message, bot: Bot, **kwargs):
     ...
 
 
 @router.message(Command(commands.Admin.RELEASE), F.text.regexp(pattern))
-async def release(message: Message, bot: Bot, username: str = None, *args):
+async def release(message: Message, bot: Bot, **kwargs):
     ...
 
 
 @router.message(Command(commands.Admin.GET_USER), F.text.regexp(pattern))
-async def get_user(message: Message, bot: Bot, username: str = None, *args):
+async def get_user(message: Message, bot: Bot, **kwargs):
     ...
 
 
 @router.message(Command(commands.Admin.BAN_LIST), F.text.regexp(pattern))
-async def ban_list(message: Message, bot: Bot, username: str = None, *args):
+async def ban_list(message: Message, bot: Bot, **kwargs):
     ...
 
 
 @router.message(Command(commands.Admin.HOLD_LIST), F.text.regexp(pattern))
-async def hold_list(message: Message, bot: Bot, username: str = None, *args):
+async def hold_list(message: Message, bot: Bot, **kwargs):
     ...
 
 
 @router.message(Command(*list(commands.Admin)), ~F.text.regexp(pattern))
 async def incomplete_command(message: Message, bot: Bot, state: FSMContext, *args):
+    command = message.text.split()[0]
+    command = re.sub(r"/", "", command)
+
     await state.set_state(AdminCommand.incomplete_command)
-    await state.update_data(command=message.text)
+    await state.update_data(command=command)
     await bot.send_message(
         chat_id=message.chat.id,
-        text=T.incomplete_command(message.text)
+        text=T.incomplete_command(command)
     )
 
 
 @router.message(AdminCommand.incomplete_command)
-async def complete_command(message: Message, bot: Bot, state: FSMContext, my_user: UserData):
+async def complete_command(message: Message, bot: Bot, state: FSMContext):
     data = await state.get_data()
     await state.clear()
 
     command = data.get("command")
     if command:
-        command = re.sub(r"/", "", command)
         func = globals().get(command)
         await func(
             message=message,

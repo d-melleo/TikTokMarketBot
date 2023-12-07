@@ -15,10 +15,10 @@ from aiogram.utils.i18n import gettext as _
 from emoji import emojize
 
 
-def ban(username: str, banned: bool = None) -> str:
-    if banned:
+def ban(username: str, _result: bool = None) -> str:
+    if _result:
         result = "has been banned."
-    elif banned is None:
+    elif _result is None:
         result = "is you. You cannot ban yourself."
     else:
         result = "does not exist in your database. Cannot ban."
@@ -29,4 +29,4 @@ def ban(username: str, banned: bool = None) -> str:
 def incomplete_command(command: str) -> str:
     command = re.sub(r"/", "", command)
     command = re.sub(r"_", " ", command)
-    return _(f"Please, enter a username you would like to {command}.")
+    return _(f"Please, enter a valid username you would like to {command}.")

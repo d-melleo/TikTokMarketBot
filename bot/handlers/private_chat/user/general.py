@@ -8,10 +8,10 @@ from aiogram.types import CallbackQuery, Chat, Message, User
 from ....messages.markups import private_chat_markup as M
 from ....messages.text import private_chat_text as T
 from ....enums import PrivateChatMarkupData as MD
-from ....enums import commands
+from ....enums.role_commands import User
 from bot.tools.router_setup import register_filters
 from bot.tools.get_mentioned_user import get_mentioned_user
-from db.userdata import UserData
+from db.userdata import UserData, get_my_user
 
 # Sub router of the parent Router(name="private_chat_root")
 router = Router(name="private_chat_general")
@@ -24,7 +24,7 @@ filters = {
 register_filters(router, filters)
 
 
-@router.message(Command(commands.User.START))
+@router.message(Command(User.START))
 async def start(message: Message, bot: Bot, event_chat: Chat):
     await bot.send_message(
         chat_id=event_chat.id,
@@ -44,7 +44,8 @@ async def request_video(callback_query: CallbackQuery, bot: Bot, event_chat: Cha
 @router.message((F.video.duration <= 62) & (~F.media_group_id))
 async def received_video(
     message: Message, bot: Bot, event_chat: Chat,
-    event_from_user: User, current_utc_time: datetime
+    event_from_user: User, my_user: UserData,
+    current_utc_time: datetime
 ) -> None:
     from ...admission_channel.general import post_video
 
@@ -52,7 +53,7 @@ async def received_video(
     await post_video(message, bot, event_from_user, current_utc_time)
 
     # Set a user on hold for 4 hours, user won't be able to send new videos
-    await UserData.hold(event_from_user.id, current_utc_time, hold_for_hrs=4)
+    await my_user.hold(current_utc_time, hrs=3)
 
     await bot.send_message(
         chat_id=event_chat.id,
@@ -90,5 +91,7 @@ async def notify_user_desicion(
         text=T.notify_user_desicion(decision),
         reply_markup=M.send_video()
     )
+
     # Allow user to send videos again
-    await UserData.release(video_from_user.id, current_utc_time)
+    subject_user: UserData = await get_my_user(video_from_user, current_utc_time)
+    await subject_user.release(current_utc_time)

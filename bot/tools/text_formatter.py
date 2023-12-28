@@ -14,10 +14,14 @@ def text_formatter(text: str, values: Dict[str, Any]) -> Dict[str, Any]:
             # Append plain text into the list
             output.append(literal_text)
         if placeholder:
-            # Get value fro the placeholder and execute is calalble
-            value = values[placeholder]
-            if callable(value):
-                value = value()
-            output.append(value)
+            # Get value for the placeholder and execute if calalble
+            try:
+                value = values[placeholder]
+            except KeyError:
+                ...
+            else:
+                if callable(value):
+                    value = value()
+                output.append(value)
 
     return Text(*output).as_kwargs()

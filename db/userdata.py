@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List
 
 from aiogram.types import BotCommand, User
 from pymongo.results import UpdateResult
@@ -15,7 +15,7 @@ class UserData:
         current_utc_time: datetime
     ) -> None:
         DEFAULT_USER_ROLE = PrivateChatRoles.USER
-        
+
         # _id (with underscore) replaces Mongo's default _id key.
         self._id: int = data.get('id', data.get('_id'))
         self.first_name: str = data.get('first_name')
@@ -30,8 +30,6 @@ class UserData:
             'last_activity', current_utc_time)
         self.hold_until: datetime = data.get(
             'hold_until', current_utc_time)
-
-        self.commands: List[BotCommand] = None
 
     @property
     def full_name(self) -> str:
@@ -66,43 +64,56 @@ class UserData:
 
         return db_user
 
-    async def update_last_activity(self, current_utc_time: datetime) -> None:
+    async def update_last_activity(self, last_activity: datetime) -> None:
         """Update the last activity timestamp in the database after a handler's execution."""
-        self.last_activity = current_utc_time
+        self.last_activity = last_activity
 
         await DBConnect.collection.update_one(
             {'_id': self._id},
-            {'$set': {'last_activity': current_utc_time}}
+            {'$set': {'last_activity': last_activity}}
         )
 
-    @staticmethod
-    async def hold(user_id: int | str, current_utc_time: datetime, hold_for_hrs: int):
-        hold_until = current_utc_time + timedelta(hours=hold_for_hrs)
-        await DBConnect.collection.update_one(
-            {'_id': user_id},
-            {'$set': {'hold_until': hold_until}}
+    async def ban(self) -> bool:
+        self.is_banned = True
+        response: UpdateResult = await DBConnect.collection.update_one(
+            {'_id': self._id},
+            {'$set': {'is_banned': self.is_banned}}
         )
+        return response.raw_result['updatedExisting']
 
-    @staticmethod
-    async def release(user_id: int | str, current_utc_time: datetime):
-        await DBConnect.collection.update_one(
-            {'_id': user_id},
-            {'$set': {'hold_until': current_utc_time}}
+    async def unban(self) -> bool:
+        self.is_banned = False
+        response: UpdateResult = await DBConnect.collection.update_one(
+            {'_id': self._id},
+            {'$set': {'is_banned': self.is_banned}}
         )
+        return response.raw_result['updatedExisting']
 
+    async def hold(self, current_utc_time: datetime, hrs: int) -> bool:
+        self.hold_until = current_utc_time + timedelta(hours=hrs)
+        response: UpdateResult = await DBConnect.collection.update_one(
+            {'_id': self._id},
+            {'$set': {'hold_until': self.hold_until}}
+        )
+        return response.raw_result['updatedExisting']
 
-    @staticmethod
-    async def ban(my_role: str, ban_username: str) -> bool:
-        db_user = await DBConnect.collection.find_one({'username': ban_username})
-        permission: bool = PrivateChatRoles.superiority(my_role, db_user.get("role"))
-        
-        if permission:
-            result: UpdateResult = await DBConnect.collection.update_one(
-                {'username': ban_username},
-                {'$set': {'is_banned': True}}
-            )
-            return result.raw_result['updatedExisting']
+    def hold_timer(self, current_utc_time: datetime) -> Dict[str, int]:
+        timeframe: timedelta = self.hold_until - current_utc_time
 
+        return {
+            "days": timeframe.days,
+            "hours": timeframe.seconds//3600,
+            "minutes": (timeframe.seconds//60)%60,
+            "seconds": int(timeframe.total_seconds())
+        }
+
+    async def release(self, current_utc_time: datetime) -> bool:
+        self.hold_until = current_utc_time
+        response: UpdateResult = await DBConnect.collection.update_one(
+            {'_id': self._id},
+            {'$set': {'hold_until': self.hold_until}}
+        )
+        return response.raw_result['updatedExisting']
 
 async def get_my_user(
     tg_user: User,
@@ -132,7 +143,6 @@ async def get_my_user(
             tg_user,
             values=["first_name", "last_name", "username"]
         )
-        
         my_user = UserData(db_user, current_utc_time)
 
     return my_user

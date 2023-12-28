@@ -30,16 +30,12 @@ class LocalizationMiddleware(I18nMiddleware):
         event: TelegramObject,
         data: Dict[str, Any],
     ) -> Any:
-        my_user: UserData = None
-
-        # Resolve i18n for messaged to end users originated from Admissions channel
+        # User instance passed from the database middleware
+        my_user: UserData = data.get("my_user")
+        # Resolve i18n for mentioned users (@custom_username)
         i18n_admissions: bool = get_flag(data, AF.I18N_ADMISSIONS)
 
-        if data.get("my_user"):
-            # For private chat messages, user data is resovled in the database middleware
-            my_user: UserData = data.get("my_user")
-
-        elif i18n_admissions:
+        if i18n_admissions:
             # Get language code of the mentioned user
             video_from_user: User = get_mentioned_user(event.message)
             my_user: UserData = await get_my_user(video_from_user, data.get(CURRENT_UTC_TIME_KEY))

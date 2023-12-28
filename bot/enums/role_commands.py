@@ -12,7 +12,8 @@ class Admin(str, Enum):
     UNBAN = "unban"
     HOLD = "hold"
     RELEASE = "release"
-    GET_USER = "get_user"
+    RELEASE_ALL = "release_all"
+    GET = "get"
     BAN_LIST = "ban_list"
     HOLD_LIST = "hold_list"
 

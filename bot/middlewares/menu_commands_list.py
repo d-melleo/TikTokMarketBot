@@ -8,7 +8,7 @@ from ..messages.private_chat_commands_menu import get_my_commands
 from db.userdata import UserData
 
 
-class CommandsMiddleware(BaseMiddleware):
+class MenuCommandsMiddleware(BaseMiddleware):
     async def __call__(
             self,
             handler: Callable[[Message, Dict[str, Any]], Awaitable[Any]],
@@ -21,12 +21,9 @@ class CommandsMiddleware(BaseMiddleware):
         # Retrieve the user's instance passed from the outer DatabaseMiddleware.
         my_user: UserData = data['my_user']
 
-        # Set the commands for the user based on their role.
-        my_user.commands: List[BotCommand] = get_my_commands(my_user)
-
         # Set the commands available for the user in the bot.
         await bot.set_my_commands(
-            commands=my_user.commands,
+            commands=get_my_commands(my_user),
             scope=BotCommandScopeChat(chat_id=my_user._id))
         
         # Execute the handler.

@@ -23,19 +23,10 @@ async def on_hold(
     message: Message,
     bot: Bot,
     event_chat: Chat,
-    current_utc_time: datetime,
-    my_user: UserData
+    my_user: UserData,
+    current_utc_time: datetime
 ) -> None:
-    timefrane: timedelta = my_user.hold_until - current_utc_time
-
-    data = {
-        "days": timefrane.days,
-        "hours": timefrane.seconds//3600,
-        "minutes": (timefrane.seconds//60)%60,
-        "seconds": int(timefrane.total_seconds())
-    }
-
     await bot.send_message(
         chat_id=event_chat.id,
-        text=T.on_hold(data)
+        text=T.on_hold(my_user.hold_timer(current_utc_time))
     )

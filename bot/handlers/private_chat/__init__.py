@@ -9,11 +9,11 @@ from .user.general import router as private_chat_general
 from .user.banned import router as private_chat_banned
 from .user.on_hold import router as private_chat_on_hold
 
-
 from ...middlewares import (
+    AdminCommands,
     DatabaseMiddleware,
-    CommandsMiddleware,
-    LocalizationMiddleware
+    LocalizationMiddleware,
+    MenuCommandsMiddleware,
 )
 from ...tools.router_setup import register_filters, register_middlewares
 
@@ -27,12 +27,12 @@ filters = {
 register_filters(router, filters)
 
 router.include_routers(
+    private_chat_banned,
+    private_chat_on_hold,
+    private_chat_general,
     private_chat_admin,
     private_chat_superadmin,
-    private_chat_creator,
-    private_chat_general,
-    private_chat_banned,
-    private_chat_on_hold
+    private_chat_creator
 )
 
 register_middlewares(
@@ -42,6 +42,10 @@ register_middlewares(
     ),
     inner=(
         LocalizationMiddleware,
-        CommandsMiddleware
+        MenuCommandsMiddleware
     )
 )
+
+register_middlewares(router=private_chat_admin, inner=(AdminCommands,))
+register_middlewares(router=private_chat_superadmin, inner=(AdminCommands,))
+register_middlewares(router=private_chat_creator, inner=(AdminCommands,))

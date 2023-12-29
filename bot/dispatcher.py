@@ -5,7 +5,7 @@ from .middlewares import ThrottlingMiddleware
 from .tools.router_setup import register_middlewares
 
 
-async def initialize() -> Dispatcher:
+def initialize() -> Dispatcher:
     """Initialize the aiogram Dispatcher with routers and middlewares.
 
     Returns:

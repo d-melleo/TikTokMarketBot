@@ -39,7 +39,7 @@ def webhook_run():
     dp.shutdown.register(on_shutdown)
 
     # Create a Bot instance with specified settings for API calls.
-    bot = Bot(BOT_TOKEN, parse_mode=ParseMode.HTML)
+    bot = Bot(BOT_TOKEN)
 
     # Create an aiohttp web application.
     app = web.Application()

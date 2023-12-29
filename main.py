@@ -14,4 +14,5 @@ from bot.webhook import webhook_run
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, stream=sys.stdout)
-    asyncio.run(polling_run())
+    # asyncio.run(polling_run())
+    webhook_run()

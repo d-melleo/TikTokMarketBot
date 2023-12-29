@@ -14,18 +14,16 @@ from db.userdata import UserData
 router = Router(name="private_chat_on_hold")
 
 filters = [
-    (MagicData(F.my_user.hold_until > F.current_utc_time)),
-    ((~F.text.regexp(r"^/\w+\s*?(?:\s+@?\w+)?$"))
-    | (F.video)
-    | (F.data == MD.SEND_VIDEO_DATA)),
-    F.data.not_in({MD.EN_LANGUAGE_DATA, MD.PL_LANGUAGE_DATA, MD.UK_LANGUAGE_DATA})
+    MagicData(F.my_user.hold_until > F.current_utc_time),
+    ~F.text,
+    (F.video) | (F.data == MD.SEND_VIDEO_DATA)
 ]
 
 # Register filters for this sub router.
 register_filters(router, filters)
 
 
-@router.message(~F.text)
+@router.message()
 @router.callback_query()
 async def on_hold(
     message: Message,

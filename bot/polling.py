@@ -21,7 +21,7 @@ async def polling_run() -> None:
         >>> await polling_run()
     """
     # Initialize and set up the dispatcher
-    dp: Dispatcher = await dispatcher.initialize()
+    dp: Dispatcher = dispatcher.initialize()
 
     # Create an instance of the Bot
     bot = Bot(BOT_TOKEN)

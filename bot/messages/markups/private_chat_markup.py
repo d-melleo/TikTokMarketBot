@@ -19,13 +19,13 @@ def language() -> InlineKeyboardBuilder:
     keyboard = InlineKeyboardBuilder()
 
     keyboard.add(InlineKeyboardButton(
-        text=_("English"),
+        text=_("English 🇬🇧"),
         callback_data=MD.EN_LANGUAGE_DATA))
     keyboard.row(InlineKeyboardButton(
-        text=_("Polish"),
+        text=_("Polish 🇵🇱"),
         callback_data=MD.PL_LANGUAGE_DATA))
     keyboard.row(InlineKeyboardButton(
-        text=_("Ukrainian"),
+        text=_("Ukrainian 🇺🇦"),
         callback_data=MD.UK_LANGUAGE_DATA))
 
     return keyboard.as_markup()

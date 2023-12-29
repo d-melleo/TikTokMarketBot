@@ -282,7 +282,7 @@ def remove_admin(action_response: Response, subject_user: UserData, pre_role: Pr
             txt = _("{emj} The user @{subject_username} is not an administrator.")
         elif pre_role == PrivateChatRoles.SUPERADMIN:
             txt = _(
-                "{emj} The user @{subject_username} is a super admin."
+                "{emj} The user @{subject_username} is a super admin. "
                 +"You must use the /remove_superadmin command instead."
             )
         else:

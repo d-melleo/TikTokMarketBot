@@ -28,7 +28,7 @@ If we like the video, we will contact you. {}{}{}\
 
 
 def help() -> str:
-    return """\
+    return _("""\
 How it Works:
 1. 📹 Send us your personally made video with a duration up to 60 seconds.
 2. ⏳ After submission, there is a 3-hour cooldown before you can send another video, or we may review it before the cooldown expires.
@@ -39,7 +39,7 @@ Submission Guidelines:
 - 🚫 Do not post the video anywhere else until we review it.
 - 📅 You can send one video at a time.
 - ⏰ Allow a 3-hour cooldown before submitting another video, or wait for our review.\
-"""
+""")
 
 
 def language() -> str:
@@ -48,11 +48,11 @@ def language() -> str:
 
 def set_language(lang_code: str) -> str:
     if lang_code == PMD.EN_LANGUAGE_DATA:
-        txt = _("{emj} Set your language to English")
+        txt = _("{emj} Language has been changed to English")
     elif lang_code == PMD.PL_LANGUAGE_DATA:
-        txt = _("{emj} Set your language to Polish")
+        txt = _("{emj} Language has been changed to Polish")
     elif lang_code == PMD.UK_LANGUAGE_DATA:
-        txt = _("{emj} Set your language to Ukrainian")
+        txt = _("{emj} Language has been changed to Ukrainian")
 
     return txt.format(emj=emj.POSITIVE)
 
@@ -113,12 +113,14 @@ def received_other_media() -> str:
 
 def notify_user_desicion(decision: str) -> str:
     if decision == MD.CONFIRMED_LIKED_DATA:
-        return """\
-Congratulations! Your video was a hit!
+        return _("""\
+Congratulations {emj1}! Your video was a hit {emj2}!
 We'll be reaching out to you very soon to dive into further discussions."""
+).format(emj1=emj.SUNGLASSES_FACE, emj2=emj.PARTY_POPPER)
 
     elif decision == MD.CONFIRMED_DISLIKED_DATA:
-        return """\
-Hey, thanks a bunch for your recent video! \
+        return _("""\
+{emj1} Hey, thanks a bunch for your recent video! \
 Although we've decided not to move forward with it this time, \
-we're super excited to see more of your content!"""
+we're super excited to see more of your content {emj2}!"""
+).format(emj1=emj.MONKEY, emj2=emj.BALLOON)

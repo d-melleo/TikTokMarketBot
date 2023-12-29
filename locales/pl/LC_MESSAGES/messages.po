@@ -7,19 +7,368 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
 "Report-Msgid-Bugs-To: EMAIL@ADDRESS\n"
-"POT-Creation-Date: 2023-11-27 17:31+0200\n"
-"PO-Revision-Date: 2023-11-27 17:36+0200\n"
+"POT-Creation-Date: 2023-12-29 13:01+0200\n"
+"PO-Revision-Date: 2023-12-29 13:23+0200\n"
 "Last-Translator: \n"
-"Language: pl\n"
 "Language-Team: pl <LL@li.org>\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && "
-"(n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || "
+"n%100>=20) ? 1 : 2);\n"
 "Generated-By: Babel 2.12.1\n"
+"X-Generator: Poedit 3.4.1\n"
 
-#: bot/private/content/text.py:18
+#: bot/messages/private_chat_commands_menu.py:13
+msgid "Start"
+msgstr "Start"
+
+#: bot/messages/private_chat_commands_menu.py:14
+msgid "Help"
+msgstr "Help"
+
+#: bot/messages/private_chat_commands_menu.py:15
+msgid "Language"
+msgstr "Język"
+
+#: bot/messages/private_chat_commands_menu.py:22
+msgid "Ban a user"
+msgstr "Zbanuj użytkownika"
+
+#: bot/messages/private_chat_commands_menu.py:23
+msgid "Unban a user"
+msgstr "Odbanuj użytkownika"
+
+#: bot/messages/private_chat_commands_menu.py:24
+msgid "Prevent a user from sending videos"
+msgstr "Zablokuj wysyłanie filmów przez użytkownika"
+
+#: bot/messages/private_chat_commands_menu.py:25
+msgid "Allow a user to send videos"
+msgstr "Zezwól na wysyłanie filmów przez użytkownika"
+
+#: bot/messages/private_chat_commands_menu.py:26
+msgid "Allow all users to send videos"
+msgstr "Zezwól wszystkim użytkownikom na wysyłanie filmów"
+
+#: bot/messages/private_chat_commands_menu.py:27
+msgid "Get user's data from DB"
+msgstr "Pobierz dane użytkownika z bazy danych"
+
+#: bot/messages/private_chat_commands_menu.py:28
+msgid "Show banned users"
+msgstr "Pokaż zbanowanych użytkowników"
+
+#: bot/messages/private_chat_commands_menu.py:29
+msgid "Show users on hold"
+msgstr "Pokaż użytkowników na wstrzymaniu"
+
+#: bot/messages/private_chat_commands_menu.py:36
+msgid "Add a new admin"
+msgstr "Dodaj nowego administratora"
+
+#: bot/messages/private_chat_commands_menu.py:37
+msgid "Remove an admin"
+msgstr "Usuń administratora"
+
+#: bot/messages/private_chat_commands_menu.py:44
+msgid "Add a new superadmin"
+msgstr "Dodaj nowego superadmina"
+
+#: bot/messages/private_chat_commands_menu.py:45
+msgid "Remove a superadmin"
+msgstr "Usuń superadmina"
+
+#: bot/messages/markups/private_chat_markup.py:12
+msgid "Send a video"
+msgstr "Wyślij film"
+
+#: bot/messages/markups/private_chat_markup.py:22
+msgid "English 🇬🇧"
+msgstr "English 🇬🇧"
+
+#: bot/messages/markups/private_chat_markup.py:25
+msgid "Polish 🇵🇱"
+msgstr "Polski 🇵🇱"
+
+#: bot/messages/markups/private_chat_markup.py:28
+msgid "Ukrainian 🇺🇦"
+msgstr "Українська 🇺🇦"
+
+#: bot/messages/text/private_chat_admin.py:27
+msgid "{emj} Invalid username."
+msgstr "{emj} Nieprawidłowy username użytkownika."
+
+#: bot/messages/text/private_chat_admin.py:33
+msgid "{emj} The user @{subject_username} does not use the bot."
+msgstr "{emj} Użytkownik @{subject_username} nie korzysta z bota."
+
+#: bot/messages/text/private_chat_admin.py:39
+msgid "{emj} Oops... Something went wrong. Please, try again."
+msgstr "{emj} Ups... Coś poszło nie tak. Spróbuj ponownie."
+
+#: bot/messages/text/private_chat_admin.py:46
+msgid "{emj} Provide the username you would like to ban."
+msgstr "{emj} Podaj username użytkownika, którego chcesz zbanować."
+
+#: bot/messages/text/private_chat_admin.py:48
+msgid "{emj} Provide the username you would like to unban."
+msgstr "{emj} Podaj username użytkownika, którego chcesz odbanować."
+
+#: bot/messages/text/private_chat_admin.py:51
+msgid ""
+"{emj1} Provide the username you would like to place on hold, specifying the "
+"duration in hours.\n"
+"\n"
+"{emj2} For example, {example}."
+msgstr ""
+"{emj1} Podaj username użytkownika, którego chcesz umieścić na wstrzymanie, "
+"określając czas trwania w godzinach.\n"
+"\n"
+"{emj2} Na przykład, {example}."
+
+#: bot/messages/text/private_chat_admin.py:62
+msgid "{emj} Provide the username you would like to release from hold."
+msgstr "{emj} Podaj username użytkownika, którego chcesz uwolnić z wstrzymania."
+
+#: bot/messages/text/private_chat_admin.py:64
+msgid "{emj} Provide the username you would like to get from data base."
+msgstr "{emj} Podaj username użytkownika, którego chcesz pobrać z bazy danych."
+
+#: bot/messages/text/private_chat_admin.py:66
+msgid "{emj} Provide the username you would like to promote to administrator."
+msgstr ""
+"{emj} Podaj username użytkownika, którego chcesz awansować na administratora."
+
+#: bot/messages/text/private_chat_admin.py:68
+msgid "{emj} Provide the username you would like to demote from administrator."
+msgstr ""
+"{emj} Podaj username użytkownika, którego chcesz zdegradować z administratora."
+
+#: bot/messages/text/private_chat_admin.py:70
+msgid "{emj} Provide the username you would like to promote to super admin."
+msgstr "{emj} Podaj username użytkownika, którego chcesz awansować na superadmina."
+
+#: bot/messages/text/private_chat_admin.py:72
+msgid "{emj} Provide the username you would like to demote from super admin."
+msgstr ""
+"{emj} Podaj username użytkownika, którego chcesz zdegradować ze superadmina."
+
+#: bot/messages/text/private_chat_admin.py:80
+msgid "{emj} You cannot ban yourself."
+msgstr "{emj} Nie możesz zbanować samego siebie."
+
+#: bot/messages/text/private_chat_admin.py:82
+msgid "{emj} You cannot apply the unban command to yourself."
+msgstr "{emj} Nie możesz odbanować samego siebie."
+
+#: bot/messages/text/private_chat_admin.py:84
+msgid "{emj} You cannot put yourself on hold."
+msgstr "{emj} Nie możesz umieścić samego siebie na wstrzymanie."
+
+#: bot/messages/text/private_chat_admin.py:86
+msgid "{emj} You cannot apply the release command to yourself."
+msgstr "{emj} Nie możesz zwolnić samego siebie z wstrzymania."
+
+#: bot/messages/text/private_chat_admin.py:88
+msgid "{emj} You cannot retrieve your information from the database by yourself."
+msgstr "{emj} Nie możesz pobrać swoich informacji z bazy danych samodzielnie."
+
+#: bot/messages/text/private_chat_admin.py:95
+msgid "{emj} You cannot apply this command to yourself."
+msgstr "{emj} Nie możesz zastosować tej komendy do siebie."
+
+#: bot/messages/text/private_chat_admin.py:103
+msgid "{emj} You don't have permission to ban @{subject_username}."
+msgstr "{emj} Nie masz uprawnień do zbanowania użytkownika @{subject_username}."
+
+#: bot/messages/text/private_chat_admin.py:105
+msgid "{emj} You don't have permission to unban @{subject_username}."
+msgstr "{emj} Nie masz uprawnień do odbanowania użytkownika @{subject_username}."
+
+#: bot/messages/text/private_chat_admin.py:107
+msgid "{emj} You don't have permission to put @{subject_username} on hold."
+msgstr ""
+"{emj} Nie masz uprawnień do umieszczenia użytkownika @{subject_username} na "
+"wstrzymanie."
+
+#: bot/messages/text/private_chat_admin.py:109
+msgid "{emj} You don't have permission to release @{subject_username} from hold."
+msgstr ""
+"{emj} Nie masz uprawnień do zwolnienia użytkownika @{subject_username} z "
+"wstrzymania."
+
+#: bot/messages/text/private_chat_admin.py:111
+msgid ""
+"{emj} You don't have permission to retrieve information from the database for "
+"the user @{subject_username}."
+msgstr ""
+"{emj} Nie masz uprawnień do pobrania informacji z bazy danych dla użytkownika "
+"@{subject_username}."
+
+#: bot/messages/text/private_chat_admin.py:114
+msgid ""
+"{emj} You don't have permission to promote @{subject_username} to administrator."
+msgstr ""
+"{emj} Nie masz uprawnień do awansowania użytkownika @{subject_username} na "
+"administratora."
+
+#: bot/messages/text/private_chat_admin.py:116
+msgid ""
+"{emj} You don't have permission to demote @{subject_username} from administrator."
+msgstr ""
+"{emj} Nie masz uprawnień do degradacji użytkownika @{subject_username} z "
+"administratora."
+
+#: bot/messages/text/private_chat_admin.py:118
+msgid ""
+"{emj} You don't have permission to promote @{subject_username} to super admin."
+msgstr ""
+"{emj} Nie masz uprawnień do awansowania użytkownika @{subject_username} na "
+"superadmina."
+
+#: bot/messages/text/private_chat_admin.py:120
+msgid ""
+"{emj} You don't have permission to demote @{subject_username} from super admin."
+msgstr ""
+"{emj} Nie masz uprawnień do degradacji użytkownika @{subject_username} ze "
+"superadmina."
+
+#: bot/messages/text/private_chat_admin.py:128
+msgid "{emj} You have successfully banned @{subject_username}."
+msgstr "{emj} Zbanowano użytkownika @{subject_username}."
+
+#: bot/messages/text/private_chat_admin.py:132
+msgid "{emj} @{subject_username} is already banned."
+msgstr "{emj} Użytkownik @{subject_username} jest już zbanowany."
+
+#: bot/messages/text/private_chat_admin.py:139
+msgid "{emj} You have successfully unbanned @{subject_username}."
+msgstr "{emj} Odbanowano użytkownika @{subject_username}."
+
+#: bot/messages/text/private_chat_admin.py:143
+msgid "{emj} @{subject_username} is not banned."
+msgstr "{emj} Użytkownik @{subject_username} nie jest zbanowany."
+
+#: bot/messages/text/private_chat_admin.py:151
+msgid "{emj} The user @{subject_username} has been placed on hold for{timer}."
+msgstr ""
+"{emj} Użytkownik @{subject_username} został umieszczony na wstrzymanie na{timer}."
+
+#: bot/messages/text/private_chat_admin.py:157
+msgid "username hours"
+msgstr "username godziny"
+
+#: bot/messages/text/private_chat_admin.py:158
+msgid ""
+"{emj1} Invalid format.\n"
+"Provide the command as follows: /hold {template}.\n"
+"\n"
+"{emj2} For example, /hold {example}."
+msgstr ""
+"{emj1} Nieprawidłowy format.\n"
+"Podaj komendę w następujący sposób: /hold {template}.\n"
+"\n"
+"{emj2} Na przykład, /hold {example}."
+
+#: bot/messages/text/private_chat_admin.py:170
+msgid "{emj} You have successfully released @{subject_username}."
+msgstr "{emj} Zwolniono użytkownika @{subject_username} z wstrzymania."
+
+#: bot/messages/text/private_chat_admin.py:174
+msgid "{emj} The user @{subject_username} is not on hold."
+msgstr "{emj} Użytkownik @{subject_username} nie jest na wstrzymaniu."
+
+#: bot/messages/text/private_chat_admin.py:181
+msgid ""
+"{emj} Released {modified_count}/{objects_count} users:\n"
+"\n"
+"{objects}"
+msgstr ""
+"{emj} Zwolniono {modified_count}/{objects_count} użytkowników:\n"
+"\n"
+"{objects}"
+
+#: bot/messages/text/private_chat_admin.py:191
+msgid "{emj} There are no users to be released."
+msgstr "{emj} Nie ma użytkowników do zwolnienia."
+
+#: bot/messages/text/private_chat_admin.py:198
+msgid "{emj} Information retrieved from data base:\n"
+msgstr "{emj} Informacje pobrane z bazy danych:\n"
+
+#: bot/messages/text/private_chat_admin.py:220
+msgid ""
+"{emj} The list of banned users {objects_count}:\n"
+"\n"
+"{objects}"
+msgstr ""
+"{emj} Lista zbanowanych użytkowników {objects_count}:\n"
+"\n"
+"{objects}"
+
+#: bot/messages/text/private_chat_admin.py:228
+msgid "{emj} There are no banned users."
+msgstr "{emj} Brak zbanowanych użytkowników."
+
+#: bot/messages/text/private_chat_admin.py:234
+msgid ""
+"{emj} The list of users on hold {objects_count}:\n"
+"\n"
+"{objects}"
+msgstr ""
+"{emj} Lista użytkowników na wstrzymaniu {objects_count}:\n"
+"\n"
+"{objects}"
+
+#: bot/messages/text/private_chat_admin.py:242
+msgid "{emj} There are no users on hold."
+msgstr "{emj} Brak użytkowników na wstrzymaniu."
+
+#: bot/messages/text/private_chat_admin.py:250
+msgid "{emj} You have successfully promoted @{subject_username} to administrator."
+msgstr "{emj} Awansowano użytkownika @{subject_username} na administratora."
+
+#: bot/messages/text/private_chat_admin.py:253
+msgid ""
+"{emj} You have successfully promoted @{subject_username} from admin to super "
+"admin."
+msgstr "{emj} Awansowano użytkownika @{subject_username} z admina na superadmina."
+
+#: bot/messages/text/private_chat_admin.py:255
+msgid "{emj} You have successfully promoted @{subject_username} to super admin."
+msgstr "{emj} Awansowano użytkownika @{subject_username} na superadmina."
+
+#: bot/messages/text/private_chat_admin.py:262
+msgid "{emj} The user @{subject_username} is already an administrator."
+msgstr "{emj} Użytkownik @{subject_username} jest już administratorem."
+
+#: bot/messages/text/private_chat_admin.py:264
+msgid "{emj} The user @{subject_username} is already a super admin."
+msgstr "{emj} Użytkownik @{subject_username} jest już superadminem."
+
+#: bot/messages/text/private_chat_admin.py:273
+msgid "{emj} You have successfully demoted @{subject_username} from administrator."
+msgstr "{emj} Zdegradowano użytkownika @{subject_username} z administratora."
+
+#: bot/messages/text/private_chat_admin.py:275
+msgid "{emj} You have successfully demoted @{subject_username} from super admin."
+msgstr "{emj} Zdegradowano użytkownika @{subject_username} ze superadmina."
+
+#: bot/messages/text/private_chat_admin.py:282
+msgid "{emj} The user @{subject_username} is not an administrator."
+msgstr "{emj} Użytkownik @{subject_username} nie jest administratorem."
+
+#: bot/messages/text/private_chat_admin.py:284
+msgid ""
+"{emj} The user @{subject_username} is a super admin. You must use the /"
+"remove_superadmin command instead."
+msgstr ""
+"{emj} Użytkownik @{subject_username} jest superadminem. Musisz użyć komendy /"
+"remove_superadmin."
+
+#: bot/messages/text/private_chat_text.py:20
 msgid ""
 "Hello {}!\n"
 "\n"
@@ -29,88 +378,113 @@ msgid ""
 "\n"
 "If we like the video, we will contact you. {}{}{}"
 msgstr ""
-"Cześć {}!\n"
+"Witaj {}!\n"
 "\n"
-"Tutaj możesz sprzedać swój film trwający do 60 sekund. Film powinien być "
-"rozrywkowy, podobny do Tik-Toka, i stworzony osobiście przez Ciebie.\n"
+"Tutaj możesz sprzedawać swój film trwający do 60 sekund.\n"
+"Film powinien być rozrywkowy, podobny do Tik-Toka i stworzony osobiście przez "
+"ciebie.\n"
 "\n"
-"Jeśli spodoba nam się film, skontaktujemy się z Tobą. {}{}{}"
+"Jeśli film nam się spodoba, skontaktujemy się z tobą. {}{}{}"
 
-#: bot/private/content/text.py:35
-msgid "Sorry, but you cannot send messages at the moment. {}"
-msgstr "Przepraszam, ale w chwili obecnej nie możesz wysyłać wiadomości. {}"
-
-#: bot/private/content/text.py:44
+#: bot/messages/text/private_chat_text.py:31
 msgid ""
-"{emoji} We are still reviewing your previous video. Once reviewed, you "
-"will be able to send us more. Or, after{days}d{hours}h{minutes}m, if we "
-"don't complete the review by the time."
+"How it Works:\n"
+"1. 📹 Send us your personally made video with a duration up to 60 seconds.\n"
+"2. ⏳ After submission, there is a 3-hour cooldown before you can send another "
+"video, or we may review it before the cooldown expires.\n"
+"3. 💌 If we like your video, we'll reach out to you with an offer!\n"
+"\n"
+"Submission Guidelines:\n"
+"- 🎬 Videos must be created personally by you.\n"
+"- 🚫 Do not post the video anywhere else until we review it.\n"
+"- 📅 You can send one video at a time.\n"
+"- ⏰ Allow a 3-hour cooldown before submitting another video, or wait for our "
+"review."
 msgstr ""
-"{emoji} Nadal analizujemy Twoje poprzednie wideo. Po zakończeniu recenzji"
-" będziesz mógł/mogła nam przesłać więcej. Lub, jeśli nie zakończymy "
-"recenzji wcześniej niż {days}d{hours}h{minutes}m, będziesz mógł/mogła "
-"wysłać nam kolejne wideo."
+"Jak to działa:\n"
+"1. 📹 Wyślij nam swój osobiście wykonany film o maksymalnej długości 60 sekund.\n"
+"2. ⏳ Po przesłaniu filmu, musisz odczekać 3 godziny, zanim będziesz mógł wysłać "
+"kolejny film, albo możemy go przejrzeć przed zakończeniem okresu oczekiwania.\n"
+"3. 💌 Jeśli podoba nam się twój film, skontaktujemy się z tobą z ofertą!\n"
+"\n"
+"Wytyczne dotyczące przesyłania:\n"
+"- 🎬 Filmy muszą być osobiście stworzone przez ciebie.\n"
+"- 🚫 Nie publikuj filmu nigdzie indziej, dopóki nie zrecenzujemy go.\n"
+"- 📅 Możesz przesłać jeden film naraz.\n"
+"- ⏰ Odczekaj 3 godziny przed przesłaniem kolejnego filmu albo poczekaj na naszą "
+"recenzję."
 
-#: bot/private/content/text.py:56
-msgid "Send your video up to 60 seconds:"
-msgstr "Prześlij swoje wideo do 60 sekund:"
+#: bot/messages/text/private_chat_text.py:46
+msgid "Select your language:"
+msgstr "Wybierz swój język:"
 
-#: bot/private/content/text.py:63
+#: bot/messages/text/private_chat_text.py:51
+msgid "{emj} Language has been changed to English"
+msgstr "{emj} Language has been changed to English"
+
+#: bot/messages/text/private_chat_text.py:53
+msgid "{emj} Language has been changed to Polish"
+msgstr "{emj} Język został zmieniony na polski"
+
+#: bot/messages/text/private_chat_text.py:55
+msgid "{emj} Language has been changed to Ukrainian"
+msgstr "{emj} Мову змінено на українську"
+
+#: bot/messages/text/private_chat_text.py:61
+msgid "{} Sorry, but you cannot send messages at the moment."
+msgstr "{} Przykro nam, ale w tym momencie nie możesz wysyłać wiadomości."
+
+#: bot/messages/text/private_chat_text.py:69
+msgid " {days}d"
+msgstr " {days}d"
+
+#: bot/messages/text/private_chat_text.py:70
+msgid " {hours}h"
+msgstr " {hours}g"
+
+#: bot/messages/text/private_chat_text.py:71
+msgid " {minutes}m"
+msgstr " {minutes}m"
+
+#: bot/messages/text/private_chat_text.py:84
+msgid ""
+"{emoji} We are still reviewing your previous video. Once reviewed, you will be "
+"able to send us more. Or, after{timer}, if we don't complete the review by the "
+"time."
+msgstr ""
+"{emoji} Nadal przeglądamy twój poprzedni film. Po przeglądzie będziesz mógł(a) "
+"wysłać nam więcej. Lub po {timer}, jeśli nie zakończymy przeglądu do tego czasu."
+
+#: bot/messages/text/private_chat_text.py:91
+msgid "{} Send your video up to 60 seconds:"
+msgstr "{} Wyślij swój film do 60 sekund:"
+
+#: bot/messages/text/private_chat_text.py:97
 msgid "{} Thank you! We will review your video and respond to you shortly."
-msgstr "{} Dziękujemy! Przejrzymy Twoje wideo i odpowiemy wkrótce."
+msgstr "{} Dziękujemy! Przeglądniemy twój film i odpowiemy wkrótce."
 
-#: bot/private/content/text.py:72
+#: bot/messages/text/private_chat_text.py:103
 msgid "{} You can send one video at a time with a duration of up to 60 seconds."
-msgstr ""
-"{} Możesz przesyłać jedno wideo na raz o maksymalnej długości do 60 "
-"sekund."
+msgstr "{} Możesz wysyłać jeden film o czasie trwania do 60 sekund na raz."
 
-#: bot/private/content/text.py:81
+#: bot/messages/text/private_chat_text.py:109
 msgid "{} We only accept video submissions."
-msgstr "{} Akceptujemy tylko przesyłanie wideo."
+msgstr "{} Akceptujemy tylko filmy."
 
-#~ msgid "Start"
-#~ msgstr "Rozpocznij"
+#: bot/messages/text/private_chat_text.py:116
+msgid ""
+"Congratulations {emj1}! Your video was a hit {emj2}!\n"
+"We'll be reaching out to you very soon to dive into further discussions."
+msgstr ""
+"Gratulacje {emj1}! Twój film odniósł sukces {emj2}!\n"
+"Wkrótce skontaktujemy się z tobą, aby przeprowadzić dalsze rozmowy."
 
-#~ msgid "Language"
-#~ msgstr "Język"
-
-#~ msgid "Help"
-#~ msgstr "Pomoc"
-
-#~ msgid "Ban a user"
-#~ msgstr "Zbanuj użytkownika"
-
-#~ msgid "Unban a user"
-#~ msgstr "Odbanuj użytkownika"
-
-#~ msgid "Prevent a user from sending videos"
-#~ msgstr "Zablokuj możliwość wysyłania filmów użytkownikowi"
-
-#~ msgid "Allow a user to send videos"
-#~ msgstr "Zezwól użytkownikowi na wysyłanie filmów"
-
-#~ msgid "Get user's data from DB"
-#~ msgstr "Pobierz dane użytkownika z bazy danych"
-
-#~ msgid "Show banned users"
-#~ msgstr "Pokaż zablokowanych użytkowników"
-
-#~ msgid "Show users on hold"
-#~ msgstr "Pokaż użytkowników na wstrzymaniu"
-
-#~ msgid "Add a new admin"
-#~ msgstr "Dodaj nowego administratora"
-
-#~ msgid "Remove an admin"
-#~ msgstr "Usuń administratora"
-
-#~ msgid "Add a new superadmin"
-#~ msgstr "Dodaj nowego superadministratora"
-
-#~ msgid "Remove a superadmin"
-#~ msgstr "Usuń superadministratora"
-
-#~ msgid "Send a video"
-#~ msgstr "Wyślij film"
-
+#: bot/messages/text/private_chat_text.py:122
+msgid ""
+"{emj1} Hey, thanks a bunch for your recent video! Although we've decided not to "
+"move forward with it this time, we're super excited to see more of your content "
+"{emj2}!"
+msgstr ""
+"{emj1} Hej, dzięki wielkie za twój ostatni film! Choć zdecydowaliśmy się tym "
+"razem nie kontynuować, nie możemy się doczekać, aby zobaczyć więcej twoich "
+"treści {emj2}!"

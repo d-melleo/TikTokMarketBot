@@ -2,6 +2,7 @@ from emoji import emojize
 
 
 ARROW = emojize(":left_arrow_curving_right:")
+BALLOON = emojize(":balloon:")
 CHECK_BOX = emojize(':check_box_with_check:')
 DISAPPOINT = emojize(":exclamation_question_mark:")
 EYES = emojize(":eyes:")
@@ -14,6 +15,7 @@ NEGATIVE = emojize(":cross_mark:")
 NO_SEE_MONKEY = emojize(':see-no-evil_monkey:')
 OK_HAND = emojize(":OK_hand:")
 PAPERCLIP = emojize(":paperclip:")
+PARTY_POPPER = emojize(":party_popper:")
 POSITIVE = emojize(":check_mark_button:")
 PROHIBITED = emojize(":prohibited:")
 RED_TRIANGLE = emojize(":red_triangle_pointed_down:")

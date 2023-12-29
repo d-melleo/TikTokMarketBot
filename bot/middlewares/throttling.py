@@ -35,6 +35,7 @@ class ThrottlingMiddleware(BaseMiddleware):
         # Skip the handling if a user is spamming.
         if event_chat.type == ChatType.PRIVATE and \
                 event_chat.id in self.cache:
+            self.cache[event_chat.id] = self.CACHE_FLAG
             return
 
         # Cache a user for 0.75s to sprevent spam.

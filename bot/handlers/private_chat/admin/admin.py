@@ -1,13 +1,11 @@
 from aiogram import F, Router
-from aiogram.filters import Command, CommandObject, MagicData
-from aiogram.fsm.context import FSMContext
+from aiogram.filters import Command, MagicData
 from aiogram.types import Message
 
 from ....enums import PrivateChatRoles, Response
 from ....enums.role_commands import Admin
 from ....messages.text import private_chat_admin as T
-from ....states import AdminCommand
-from ....tools.admin_commands import resolve_response
+from ....tools.admin_commands import PATTERN, register_commands_filters, resolve_response
 from ....tools.router_setup import register_filters
 from db.userdata import DBConnect, UserData
 
@@ -16,19 +14,17 @@ router = Router(name="private_chat_admin")
 
 filters = {
     MagicData(F.my_user.role.in_({
-        PrivateChatRoles.ADMIN,
-        PrivateChatRoles.SUPERADMIN,
-        PrivateChatRoles.CREATOR
+        PrivateChatRoles.ADMIN, PrivateChatRoles.SUPERADMIN, PrivateChatRoles.CREATOR
     }))
 }
+
 # Register filters for this sub router.
 register_filters(router, filters)
+# Register additional handlers for commands
+register_commands_filters(router, F.func(lambda x: globals()).as_("executable"))
 
-# Check if a command if followed by a value
-pattern = r"^/\w+\ +\@?\w+$"
 
-
-@router.message(Command(Admin.BAN), F.text.regexp(pattern))
+@router.message(Command(Admin.BAN), F.text.regexp(PATTERN))
 @resolve_response
 async def ban(message: Message, subject_user: UserData, **data):
     if subject_user.is_banned:
@@ -44,7 +40,7 @@ async def ban(message: Message, subject_user: UserData, **data):
     }
 
 
-@router.message(Command(Admin.UNBAN), F.text.regexp(pattern))
+@router.message(Command(Admin.UNBAN), F.text.regexp(PATTERN))
 @resolve_response
 async def unban(message: Message, subject_user: UserData, **data):
     if not subject_user.is_banned:
@@ -72,7 +68,7 @@ async def hold(message: Message, subject_user: UserData, hold_for: int, current_
     }
 
 
-@router.message(Command(Admin.RELEASE), F.text.regexp(pattern))
+@router.message(Command(Admin.RELEASE), F.text.regexp(PATTERN))
 @resolve_response
 async def release(message: Message, subject_user: UserData, current_utc_time, **data):
     if subject_user.hold_until < current_utc_time:
@@ -119,7 +115,7 @@ async def release_all(message: Message, current_utc_time, **data):
     }
 
 
-@router.message(Command(Admin.GET), F.text.regexp(pattern))
+@router.message(Command(Admin.GET), F.text.regexp(PATTERN))
 @resolve_response
 async def get(message: Message, **data):
     # Retrieve user's information from database
@@ -169,27 +165,3 @@ async def hold_list(message: Message, current_utc_time, **data):
         "action_response": action_response,
         "reply_text_resolver": lambda action_response: T.hold_list(action_response, objects)
     }
-
-
-@router.message(
-    Command(*list(Admin)),
-    ~F.text.regexp(pattern),
-    MagicData(F.command.command.not_in({Admin.RELEASE_ALL, Admin.BAN_LIST, Admin.HOLD_LIST}))
-)
-async def incomplete_command(message: Message, state: FSMContext, command: CommandObject):
-    # Set FSM state to await for a username input
-    await state.set_state(AdminCommand.incomplete_command)
-    # Store function to be execute for the provided command
-    await state.update_data(executable=globals().get(command.command))
-
-
-@router.message(AdminCommand.incomplete_command, F.text)
-async def complete_command(message: Message, **data):
-    state = data["state"]
-    state_data = await state.get_data()  # State's storage data
-    await state.clear()  # Finish state' conversation
-    executable = state_data.get("executable")  # Function to be executed
-
-    # Execute the handler
-    if executable:
-        return await executable(message, **data)

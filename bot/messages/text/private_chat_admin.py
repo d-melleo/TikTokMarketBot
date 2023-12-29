@@ -242,14 +242,17 @@ def hold_list(action_response: Response, objects: List[str]) -> Union[str, Dict[
             return _("{emj} There are no users on hold.").format(emj=emj.NO_SEE_MONKEY)
 
 
-def add_admin(action_response: Response, subject_user: UserData) -> str:
+def add_admin(action_response: Response, subject_user: UserData, pre_role: PrivateChatRoles) -> str:
     role = subject_user.role
 
     if action_response == Response.OK:
         if role == PrivateChatRoles.ADMIN:
             txt = _("{emj} You have successfully promoted @{subject_username} to administrator.")
         elif role == PrivateChatRoles.SUPERADMIN:
-            txt = _("{emj} You have successfully promoted @{subject_username} to super admin.")
+            if pre_role == PrivateChatRoles.ADMIN:
+                txt = _("{emj} You have successfully promoted @{subject_username} from admin to super admin.")
+            else:
+                txt = _("{emj} You have successfully promoted @{subject_username} to super admin.")
         else:
             return None
         return txt.format(emj=emj.POSITIVE, subject_username=subject_user.username)

@@ -9,7 +9,23 @@ def send_video() -> InlineKeyboardBuilder:
     keyboard = InlineKeyboardBuilder()
 
     keyboard.add(InlineKeyboardButton(
-        text=_(MD.SEND_VIDEO_LABEL.value),
+        text=_("Send a video"),
         callback_data=MD.SEND_VIDEO_DATA))
+
+    return keyboard.as_markup()
+
+
+def language() -> InlineKeyboardBuilder:
+    keyboard = InlineKeyboardBuilder()
+
+    keyboard.add(InlineKeyboardButton(
+        text=_("English"),
+        callback_data=MD.EN_LANGUAGE_DATA))
+    keyboard.row(InlineKeyboardButton(
+        text=_("Polish"),
+        callback_data=MD.PL_LANGUAGE_DATA))
+    keyboard.row(InlineKeyboardButton(
+        text=_("Ukrainian"),
+        callback_data=MD.UK_LANGUAGE_DATA))
 
     return keyboard.as_markup()

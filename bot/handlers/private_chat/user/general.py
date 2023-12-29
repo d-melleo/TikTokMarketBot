@@ -33,6 +33,36 @@ async def start(message: Message, bot: Bot, event_chat: Chat):
     )
 
 
+@router.message(Command(User.HELP))
+async def help(message: Message, bot: Bot, event_chat: Chat):
+    await bot.send_message(
+        chat_id=event_chat.id,
+        text=T.help(),
+        reply_markup=M.send_video()
+    )
+
+
+@router.message(Command(User.LANGUAGE))
+async def language(message: Message, bot: Bot, event_chat: Chat):
+    await bot.send_message(
+        chat_id=event_chat.id,
+        text=T.language(),
+        reply_markup=M.language()
+    )
+
+
+@router.callback_query(F.data.in_({
+    MD.EN_LANGUAGE_DATA, MD.PL_LANGUAGE_DATA, MD.UK_LANGUAGE_DATA
+}))
+async def set_language(callback_query: CallbackQuery, bot: Bot, event_chat: Chat, my_user: UserData):
+    await my_user.set_language(callback_query.data)
+
+    await bot.send_message(
+        chat_id=event_chat.id,
+        text=T.set_language(callback_query.data)
+    )
+
+
 @router.callback_query(F.data == MD.SEND_VIDEO_DATA)
 async def request_video(callback_query: CallbackQuery, bot: Bot, event_chat: Chat):
     await bot.send_message(

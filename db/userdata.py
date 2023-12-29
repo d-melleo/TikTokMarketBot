@@ -115,6 +115,15 @@ class UserData:
         )
         return response.raw_result['updatedExisting']
 
+
+    async def set_language(self, lang_code: str) -> None:
+        self.language_code = lang_code
+        await DBConnect.collection.update_one(
+            {'_id': self._id},
+            {'$set': {'language_code': self.language_code}}
+        )
+
+
 async def get_my_user(
     tg_user: User,
     current_utc_time: datetime

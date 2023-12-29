@@ -13,7 +13,8 @@ from aiogram.utils.i18n import gettext as _
 
 from . import emojies as emj
 from ...enums import AdmissionsChannelMarkupData as MD
-
+from ...enums import PrivateChatMarkupData as PMD
+from ...tools.text_formatter import text_formatter
 
 def start() -> str:
     return _("""\
@@ -24,6 +25,36 @@ The video should be entertaining, similar to Tik-Tok, and created by you persona
 
 If we like the video, we will contact you. {}{}{}\
 """).format(emj.SUNGLASSES_FACE, emj.LEFT_POINT_HAND, emj.TONGUE_FACE, emj.LEFT_POINT_HAND)
+
+
+def help() -> str:
+    return """\
+How it Works:
+1. 📹 Send us your personally made video with a duration up to 60 seconds.
+2. ⏳ After submission, there is a 3-hour cooldown before you can send another video, or we may review it before the cooldown expires.
+3. 💌 If we like your video, we'll reach out to you with an offer!
+
+Submission Guidelines:
+- 🎬 Videos must be created personally by you.
+- 🚫 Do not post the video anywhere else until we review it.
+- 📅 You can send one video at a time.
+- ⏰ Allow a 3-hour cooldown before submitting another video, or wait for our review.\
+"""
+
+
+def language() -> str:
+    return _("Select your language:")
+
+
+def set_language(lang_code: str) -> str:
+    if lang_code == PMD.EN_LANGUAGE_DATA:
+        txt = _("{emj} Set your language to English")
+    elif lang_code == PMD.PL_LANGUAGE_DATA:
+        txt = _("{emj} Set your language to Polish")
+    elif lang_code == PMD.UK_LANGUAGE_DATA:
+        txt = _("{emj} Set your language to Ukrainian")
+
+    return txt.format(emj=emj.POSITIVE)
 
 
 def banned() -> str:

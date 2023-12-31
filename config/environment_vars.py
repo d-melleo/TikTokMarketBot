@@ -12,13 +12,10 @@ WORKDIR = Path(__file__).parent.parent
 
 # Bot constants
 BOT_TOKEN: str = getenv('BOT_TOKEN')
-print(BOT_TOKEN)
 
-ADMISSIONS_CHANNEL_ID = getenv('ADMISSIONS_CHANNEL_ID')
 CHANNELS: Dict[str, int] = {
-    'admissions': ADMISSIONS_CHANNEL_ID
+    'admissions': int(getenv('ADMISSIONS_CHANNEL_ID'))
 }
-
 
 # Webhook
 WEBHOOK_PATH: str = getenv('WEBHOOK_PATH')
@@ -29,7 +26,3 @@ WEB_SERVER_PORT: str = getenv('WEB_SERVER_PORT')
 DB_NAME: str = getenv('DB_NAME')
 DB_COLLECTION_NAME: str = getenv('DB_COLLECTION_NAME')
 DB_CONNECTION_STRING: str = getenv('DB_CONNECTION_STRING')
-
-print(DB_NAME)
-print(DB_COLLECTION_NAME)
-print(DB_CONNECTION_STRING)

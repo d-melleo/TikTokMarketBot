@@ -2,19 +2,22 @@ from os import environ
 from pathlib import Path
 from typing import Dict
 
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 
-load_dotenv()  # load variables from virtual environment
+# load_dotenv()  # load variables from virtual environment
 
 # Path to the root directory
 WORKDIR = Path(__file__).parent.parent
 
 # Bot constants
 BOT_TOKEN: str = environ.get('BOT_TOKEN')
+
+ADMISSIONS_CHANNEL_ID = int(environ.get('ADMISSIONS_CHANNEL_ID'))
 CHANNELS: Dict[str, int] = {
-    'admissions': int(environ.get('ADMISSIONS_CHANNEL_ID'))
+    'admissions': ADMISSIONS_CHANNEL_ID
 }
+
 
 # Webhook
 WEBHOOK_PATH: str = environ.get('WEBHOOK_PATH')

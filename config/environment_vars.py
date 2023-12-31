@@ -1,33 +1,34 @@
-from os import environ
+from os import getenv
 from pathlib import Path
 from typing import Dict
 
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
 
-# load_dotenv()  # load variables from virtual environment
+load_dotenv()  # load variables from virtual environment
 
 # Path to the root directory
 WORKDIR = Path(__file__).parent.parent
 
 # Bot constants
-BOT_TOKEN: str = environ.get('BOT_TOKEN')
+BOT_TOKEN: str = getenv('BOT_TOKEN')
+print(BOT_TOKEN)
 
-ADMISSIONS_CHANNEL_ID = int(environ.get('ADMISSIONS_CHANNEL_ID'))
+ADMISSIONS_CHANNEL_ID = getenv('ADMISSIONS_CHANNEL_ID')
 CHANNELS: Dict[str, int] = {
     'admissions': ADMISSIONS_CHANNEL_ID
 }
 
 
 # Webhook
-WEBHOOK_PATH: str = environ.get('WEBHOOK_PATH')
-WEB_SERVER_HOST: str = environ.get('WEB_SERVER_HOST')
-WEB_SERVER_PORT: str = environ.get('WEB_SERVER_PORT')
+WEBHOOK_PATH: str = getenv('WEBHOOK_PATH')
+WEB_SERVER_HOST: str = getenv('WEB_SERVER_HOST')
+WEB_SERVER_PORT: str = getenv('WEB_SERVER_PORT')
 
 # Database constants
-DB_NAME: str = environ.get('DB_NAME')
-DB_COLLECTION_NAME: str = environ.get('DB_COLLECTION_NAME')
-DB_CONNECTION_STRING: str = environ.get('DB_CONNECTION_STRING')
+DB_NAME: str = getenv('DB_NAME')
+DB_COLLECTION_NAME: str = getenv('DB_COLLECTION_NAME')
+DB_CONNECTION_STRING: str = getenv('DB_CONNECTION_STRING')
 
 print(DB_NAME)
 print(DB_COLLECTION_NAME)

@@ -4,11 +4,16 @@ from aiogram.webhook.aiohttp_server import SimpleRequestHandler, setup_applicati
 from aiohttp import web
 
 from . import dispatcher
-from config.environment_vars import BOT_TOKEN, WEBHOOK_URI
+from config.environment_vars import (
+    BOT_TOKEN,
+    WEBHOOK_PATH,
+    WEB_SERVER_HOST,
+    WEB_SERVER_PORT
+)
 
 
 
-async def register_webhook(bot: Bot, webhook_uri: str = WEBHOOK_URI) -> None:
+async def register_webhook(bot: Bot, webhook_uri: str = WEBHOOK_PATH) -> None:
     """Register a webhook with the Telegram Bot API.
 
     This function removes any existing webhook and sets a new one with the specified
@@ -54,4 +59,4 @@ def webhook_run():
     setup_application(app, dp, bot=bot)
 
     # Start the web server.
-    web.run_app(app, host='127.0.0.1', port=3000)
+    web.run_app(app, host=WEB_SERVER_HOST, port=WEB_SERVER_PORT)

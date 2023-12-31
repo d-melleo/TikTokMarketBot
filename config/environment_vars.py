@@ -25,3 +25,7 @@ WEB_SERVER_PORT: str = environ.get('WEB_SERVER_PORT')
 DB_NAME: str = environ.get('DB_NAME')
 DB_COLLECTION_NAME: str = environ.get('DB_COLLECTION_NAME')
 DB_CONNECTION_STRING: str = environ.get('DB_CONNECTION_STRING')
+
+print(DB_NAME)
+print(DB_COLLECTION_NAME)
+print(DB_CONNECTION_STRING)

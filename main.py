@@ -1,9 +1,3 @@
-"""Telegram Bot
-
-:bot_name: 📱TIK-TOK MARKET💰
-:bot_username: @TikTok_MarketBot
-"""
-
 import asyncio
 import logging
 import sys

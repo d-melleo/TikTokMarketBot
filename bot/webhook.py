@@ -20,7 +20,7 @@ async def register_webhook(bot: Bot, webhook_uri: str = WEBHOOK_PATH) -> None:
     webhook_uri. The webhook can also be registered manually in a browser using the
     provided URL format.
 
-    https://api.telegram.org/bot6355498787:AAHIXifH_NGLeGeJLAidFJ5aLIFjRgx_YTk/setWebhook?url={webhook_uri}
+    https://api.telegram.org/{BOT_TOKEN}/setWebhook?url={webhook_uri}
     
 
     Args:

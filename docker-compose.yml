@@ -1,0 +1,14 @@
+version: "3.9"
+
+services:
+  bot:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    # depends_on:
+    #   - redis
+    env_file:
+      - .env
+    volumes:
+      - .:/app
+    restart: unless-stopped
